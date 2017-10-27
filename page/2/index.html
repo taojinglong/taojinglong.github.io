@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-图片处理之模式匹配（match_template）" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-ubuntu+github+hexo+aliyun搭建个人博客" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/10/27/图片处理之模式匹配（match_template）/" class="article-date">
-  <time datetime="2017-10-27T13:03:10.205Z" itemprop="datePublished">2017-10-27</time>
+    <a href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/" class="article-date">
+  <time datetime="2017-10-27T13:31:15.501Z" itemprop="datePublished">2017-10-27</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/27/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
+      <a class="article-title" href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/">ubuntu+github+hexo+aliyun搭建个人博客</a>
     </h1>
   
 
@@ -90,30 +90,43 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>以一张脸部皮肤切片中的毛孔作为研究对象，使用模式匹配寻找到该切片中所有的毛孔</p>
-<h2 id="1-选取切片，并找到匹配对象"><a href="#1-选取切片，并找到匹配对象" class="headerlink" title="1.选取切片，并找到匹配对象"></a>1.选取切片，并找到匹配对象</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">from skimage.feature import match_template</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">img_gray = cv2.cvtColor(img_o,cv2.COLOR_BGR2GRAY)</div><div class="line">img_kernel = img_gray[<span class="number">255</span>:<span class="number">295</span>,<span class="number">460</span>:<span class="number">500</span>]</div><div class="line"></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(img_o)</div><div class="line">plt.title(<span class="string">'original'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(img_gray,<span class="string">'gray'</span>)</div><div class="line">plt.title(<span class="string">'gray'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(img_kernel,<span class="string">'gray'</span>)</div><div class="line">plt.title(<span class="string">'template'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
-<p><img src="http://img.blog.csdn.net/20170912153707130?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>如上图所示，左边图为皮肤切片原图，中间为灰度图，右边为选中的匹配对象</p>
-<h2 id="2-match-template"><a href="#2-match-template" class="headerlink" title="2.match_template"></a>2.match_template</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">result = match_template(img_gray, img_kernel, pad_input=<span class="keyword">True</span>, mode=<span class="string">'constant'</span>, constant_values=<span class="number">0</span>)</div><div class="line">plt.subplot(<span class="number">121</span>),plt.imshow(img_gray,<span class="string">'gray'</span>)</div><div class="line">plt.title(<span class="string">'img_gray'</span>)</div><div class="line">plt.subplot(<span class="number">122</span>),plt.imshow(result,<span class="string">'gray'</span>)</div><div class="line">plt.title(<span class="string">'match_template'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
-<p><img src="http://img.blog.csdn.net/20170912154500701?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>匹配结果如上图右所示，其中亮度较高的部分即我们所寻找的部分</p>
-<p>接下来我们要让这张图看起来，更加明显，所以进行二值化操作，并降噪<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mask = np.ones_like(result)</div><div class="line">mask[result &gt; 0.4] = 255</div><div class="line">mask[result &lt; 0.4] = 0</div><div class="line">plt.subplot(121),plt.imshow(mask,&apos;gray&apos;),plt.title(&apos;threshold&apos;)</div><div class="line"></div><div class="line"># open</div><div class="line">kernel = np.ones((2,2),np.uint8)</div><div class="line">th_mor = cv2.morphologyEx(mask,cv2.MORPH_OPEN,kernel, iterations = 3)</div><div class="line">plt.subplot(122),plt.imshow(th_mor,&apos;gray&apos;),plt.title(&apos;open&apos;),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
-<p><img src="http://img.blog.csdn.net/20170912155020094?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>如此我们已经得到毛孔的轮廓图，不过这样看是不是太抽象了，ok，那么我们就把它画到原图上看一下</p>
-<h2 id="3-draw-contours"><a href="#3-draw-contours" class="headerlink" title="3.draw contours"></a>3.draw contours</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 寻找轮廓</div><div class="line"> _, contour_total, _ = cv2.findContours(th_mor, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)</div><div class="line"></div><div class="line"># 绘制筛选后的轮廓</div><div class="line">img_ground = img_o.copy()</div><div class="line">cv2.drawContours(img_ground,new_contours,-1,(0,255,255),2)</div><div class="line"></div><div class="line">fig = plt.figure(figsize=(12, 9))</div><div class="line">axes = np.zeros((3, 3), dtype=np.object)</div><div class="line">axes[0, 0] = plt.subplot(231),plt.imshow(img_o),plt.title(&apos;original image&apos;)</div><div class="line">axes[0, 1] = plt.subplot(232),plt.imshow(img_ground),plt.title(&apos;contours&apos;)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
-<p><img src="http://img.blog.csdn.net/20170912155844267?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>至此模式匹配的简单应用就算结束了。准确率什么的仅仅凭借我们肉眼观察是无法断定的，在此我们可以人工在原图上标注出毛孔的轮廓，然后与模式匹配结果进行比较，下面贴上作者尝试标注的图与模式匹配结果的对比（人工标注比较随意）</p>
-<p><img src="http://img.blog.csdn.net/20170912160358089?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>其中第二部分，模式匹配方法应用及二值化操作过程中，参数设置决定匹配结果。<br>另外，在各种方法使用过程中，发现LBP效果也挺好。</p>
-<p><strong>补充：</strong>上述第二部分方法是采用skimage的match_template，最近因为工作需要，又做了一份opencv的方法，具体如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import cv2</div><div class="line">img_match = cv2.matchTemplate(img_gray, img_kernel, cv2.TM_CCOEFF_NORMED)</div><div class="line"></div><div class="line"># 给匹配图补黑边，解决cv2匹配过程中边缘忽略问题</div><div class="line">img_match = cv2.copyMakeBorder(img_match,0,img_kernel.shape[0]-1,0,img_kernel.shape[1]-1,cv2.BORDER_CONSTANT,value=(0, 0, 0))</div></pre></td></tr></table></figure></p>
-<p>经检测发现，两者效果接近，skimage效果稍优。</p>
-<p>本人邮箱:craftsman.mote@gmail.com,欢迎讨论。</p>
+        <p>之前在csdn上写博客，偶然间看到一个关于使用github pages搭建个人博客的帖子，所以就尝试了一下，在此作为记录。</p>
+<h2 id="环境介绍："><a href="#环境介绍：" class="headerlink" title="环境介绍："></a>环境介绍：</h2><ul>
+<li>Ubuntu:17.04</li>
+<li>git:2.11.0</li>
+<li>node:4.7.2</li>
+<li>hexo-cli:1.0.3</li>
+</ul>
+<h2 id="1-首先搭建环境"><a href="#1-首先搭建环境" class="headerlink" title="1.首先搭建环境"></a>1.首先搭建环境</h2><ul>
+<li><p>install git</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt install git</div><div class="line">git --version</div></pre></td></tr></table></figure>
+</li>
+<li><p>install node</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt install nodejs</div><div class="line">sudo apt install npm</div><div class="line">sudo apt update</div></pre></td></tr></table></figure>
+</li>
+<li><p>install hexo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo npm install -g hexo-cli</div><div class="line">sudo npm install hexo-deployer-git --save</div><div class="line">hexo --version</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>2017年10月15号,此段时间诸如ss这样的工具基本都被禁了，所以以上步骤安装遇着不少麻烦，好在解决了，如下就算搞定了</p>
+<p><img src="http://img.blog.csdn.net/20171017175649399?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>如果有同学安装出问题，不妨搜索一下<strong>淘宝源</strong>，此处不做解释</p>
+<h2 id="2-去github建立一个"><a href="#2-去github建立一个" class="headerlink" title="2.去github建立一个"></a>2.去github建立一个</h2><p>项目名称格式如下<figure class="highlight plain"><figcaption><span>```，下面的下滑杠代表g</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171017180232363?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">ok，这样的话，我们基本就是成功啦～</div><div class="line"></div><div class="line">## 3.搭建hexo项目</div><div class="line">找一个合适的位置建立文件夹，并初始化hexo</div><div class="line">``` </div><div class="line">mkdir my_blog</div><div class="line">hexo init my_blog</div><div class="line">cd my_blog</div><div class="line">nmp install</div></pre></td></tr></table></figure></p>
+<p>修改全局设置文件<strong>_config.yml</strong>，具体怎么修改可以对照<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="external">hexo文档</a>自行修改，作者也就修改了一丁点儿<br><img src="http://img.blog.csdn.net/20171017181425039?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>注意要修改的地方还有这里，改为第二步骤我们建立的仓库地址<br><img src="http://img.blog.csdn.net/20171017182013756?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p> 部署至git上，通过访问<a href="taojinglong.github.io">taojinglong.github.io</a> 大致如下(首页图片我改了)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo generate  #根据当前目录下文件,生成静态网页</div><div class="line">npm install hexo-deployer-git --save</div><div class="line">hexo deploy #部署到git上</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20171017181143579?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<h2 id="4-绑定域名"><a href="#4-绑定域名" class="headerlink" title="4.绑定域名"></a>4.绑定域名</h2><p>首先得去万网注册一个域名，例如<figure class="highlight plain"><figcaption><span>该项目的settig 添加域名，保存即可</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 5.更新文章</div><div class="line">markdown编辑，放入``` source/_posts</div></pre></td></tr></table></figure></p>
+<ul>
+<li>hexo clean</li>
+<li>hexo generate</li>
+<li>hexo deploy</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2017/10/27/图片处理之模式匹配（match_template）/" data-id="cj99xrz690007bkbogono79xx" class="article-share-link">Share</a>
+      <a data-url="http://www.taojinglong.com/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/" data-id="cj99xwlst0004odboge2r24m2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -157,6 +170,10 @@
       <ul>
         
           <li>
+            <a href="/2017/10/27/python小知识点/">用于记录Python的知识点</a>
+          </li>
+        
+          <li>
             <a href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/">ubuntu+github+hexo+aliyun搭建个人博客</a>
           </li>
         
@@ -170,10 +187,6 @@
         
           <li>
             <a href="/2017/10/27/StackingClassifier/">StackingClassifier</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/27/OpenCV的等高线画法/">OpenCV的等高线画法</a>
           </li>
         
       </ul>

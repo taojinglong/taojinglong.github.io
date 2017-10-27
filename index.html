@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-ubuntu+github+hexo+aliyun搭建个人博客" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python小知识点" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/" class="article-date">
-  <time datetime="2017-10-27T13:31:15.501Z" itemprop="datePublished">2017-10-27</time>
+    <a href="/2017/10/27/python小知识点/" class="article-date">
+  <time datetime="2017-10-27T13:34:54.608Z" itemprop="datePublished">2017-10-27</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/">ubuntu+github+hexo+aliyun搭建个人博客</a>
+      <a class="article-title" href="/2017/10/27/python小知识点/">用于记录Python的知识点</a>
     </h1>
   
 
@@ -90,43 +90,40 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>之前在csdn上写博客，偶然间看到一个关于使用github pages搭建个人博客的帖子，所以就尝试了一下，在此作为记录。</p>
-<h2 id="环境介绍："><a href="#环境介绍：" class="headerlink" title="环境介绍："></a>环境介绍：</h2><ul>
-<li>Ubuntu:17.04</li>
-<li>git:2.11.0</li>
-<li>node:4.7.2</li>
-<li>hexo-cli:1.0.3</li>
+        <h1 id="用于记录Python的知识点"><a href="#用于记录Python的知识点" class="headerlink" title="用于记录Python的知识点"></a>用于记录Python的知识点</h1><hr>
+<h2 id="pip-相关"><a href="#pip-相关" class="headerlink" title="pip 相关"></a>pip 相关</h2><ul>
+<li><figure class="highlight plain"><figcaption><span>list``` 列出pip安装的所有包</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- ```pip list --outdated``` 列出可更新的包</div><div class="line">- ```pip install somepackage</div></pre></td></tr></table></figure>
+</li>
+<li><figure class="highlight plain"><figcaption><span>uninstall somepackage```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- ```pip install --upgrade somepackage</div></pre></td></tr></table></figure>
+</li>
+<li><figure class="highlight plain"><figcaption><span>install pip-review``` 、```pip-review --local --interactive``` 更新所有的包</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">----------</div><div class="line">## virtualenv相关</div><div class="line"></div><div class="line">virtualenv是管理不同Python环境的工具，这里介绍如何建立一个keras环境</div><div class="line"></div><div class="line">- 首先安装该包 ```pip install virtualenv</div></pre></td></tr></table></figure>
+</li>
+<li><p>建立虚拟环境目录 <figure class="highlight plain"><figcaption><span>$HOME/.virtualenvs```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 在该目录内建立keras环境 ```virtualenv keras</div></pre></td></tr></table></figure></p>
+</li>
+<li><p>启动运行keras环境 <figure class="highlight plain"><figcaption><span>keras/bin/activate```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- 停止运行 deactivate</div><div class="line">- 如果没有启动虚拟环境，系统也安装了pip工具，那么```pip install ..```将被安装在系统环境中，为了避免发生此事，可以在~/.bashrc文件中加上：```export PIP_REQUIRE_VIRTUALENV=true</div></pre></td></tr></table></figure></p>
+</li>
+<li><p>如下图所示步骤：<br><img src="http://img.blog.csdn.net/20171011162835392?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>  至此已经结束，但是每次运行keras都要<figure class="highlight plain"><figcaption><span>/../..activate``` 是不是有点费事呢，下面使用virtualenvwrapper工具辅助管理虚拟环境</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">- 安装该包 ```sudo pip install virtualenvwrapper</div></pre></td></tr></table></figure></p>
+</li>
+<li><p>在~/.bashrc中添加行：<figure class="highlight plain"><figcaption><span>WORKON_HOME</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 在~/.bashrc中添加行：```source /usr/local/bin/virtualenvwrapper.sh</div></pre></td></tr></table></figure></p>
+</li>
 </ul>
-<h2 id="1-首先搭建环境"><a href="#1-首先搭建环境" class="headerlink" title="1.首先搭建环境"></a>1.首先搭建环境</h2><ul>
-<li><p>install git</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt install git</div><div class="line">git --version</div></pre></td></tr></table></figure>
-</li>
-<li><p>install node</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt install nodejs</div><div class="line">sudo apt install npm</div><div class="line">sudo apt update</div></pre></td></tr></table></figure>
-</li>
-<li><p>install hexo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo npm install -g hexo-cli</div><div class="line">sudo npm install hexo-deployer-git --save</div><div class="line">hexo --version</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>2017年10月15号,此段时间诸如ss这样的工具基本都被禁了，所以以上步骤安装遇着不少麻烦，好在解决了，如下就算搞定了</p>
-<p><img src="http://img.blog.csdn.net/20171017175649399?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>如果有同学安装出问题，不妨搜索一下<strong>淘宝源</strong>，此处不做解释</p>
-<h2 id="2-去github建立一个"><a href="#2-去github建立一个" class="headerlink" title="2.去github建立一个"></a>2.去github建立一个</h2><p>项目名称格式如下<figure class="highlight plain"><figcaption><span>```，下面的下滑杠代表g</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171017180232363?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">ok，这样的话，我们基本就是成功啦～</div><div class="line"></div><div class="line">## 3.搭建hexo项目</div><div class="line">找一个合适的位置建立文件夹，并初始化hexo</div><div class="line">``` </div><div class="line">mkdir my_blog</div><div class="line">hexo init my_blog</div><div class="line">cd my_blog</div><div class="line">nmp install</div></pre></td></tr></table></figure></p>
-<p>修改全局设置文件<strong>_config.yml</strong>，具体怎么修改可以对照<a href="https://hexo.io/zh-cn/docs/configuration.html" target="_blank" rel="external">hexo文档</a>自行修改，作者也就修改了一丁点儿<br><img src="http://img.blog.csdn.net/20171017181425039?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>注意要修改的地方还有这里，改为第二步骤我们建立的仓库地址<br><img src="http://img.blog.csdn.net/20171017182013756?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p> 部署至git上，通过访问<a href="taojinglong.github.io">taojinglong.github.io</a> 大致如下(首页图片我改了)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo generate  #根据当前目录下文件,生成静态网页</div><div class="line">npm install hexo-deployer-git --save</div><div class="line">hexo deploy #部署到git上</div></pre></td></tr></table></figure></p>
-<p><img src="http://img.blog.csdn.net/20171017181143579?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<h2 id="4-绑定域名"><a href="#4-绑定域名" class="headerlink" title="4.绑定域名"></a>4.绑定域名</h2><p>首先得去万网注册一个域名，例如<figure class="highlight plain"><figcaption><span>该项目的settig 添加域名，保存即可</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 5.更新文章</div><div class="line">markdown编辑，放入``` source/_posts</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20171011163905185?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 <ul>
-<li>hexo clean</li>
-<li>hexo generate</li>
-<li>hexo deploy</li>
+<li><p>运行： <figure class="highlight plain"><figcaption><span>~/.bashrc```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 列出所有虚拟环境 ```workon</div></pre></td></tr></table></figure></p>
+</li>
+<li><p>启动运行虚拟环境 <figure class="highlight plain"><figcaption><span>keras```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- 如下步骤</div><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171011164153811?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">- 删除虚拟环境 ```rmvirtualenv keras</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<hr>
+<h2 id="时间相关"><a href="#时间相关" class="headerlink" title="时间相关"></a>时间相关</h2><ul>
+<li>time<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#获取当前时间，时区</div><div class="line">&gt;&gt;&gt;import time </div><div class="line">&gt;&gt;&gt;time.time() #当前时间（距离1970年1月1日 00:00:00的秒数，即时间戳）</div><div class="line">1507705104.837813</div><div class="line"></div><div class="line">&gt;&gt;&gt;time.localtime() </div><div class="line">time.struct_time(tm_year=2017, tm_mon=10, tm_mday=11, tm_hour=14, tm_min=43, tm_sec=8, tm_wday=2, tm_yday=284, tm_isdst=0)</div><div class="line">#输出解释：year，month (1-12)，day (1-31)，hours (0-23)，minutes (0-59)，seconds (0-59)，weekday (0-6, Monday is 0)，Julian day (day in the year, 1-366)，DST (Daylight Savings Time) ，flag (-1, 0 or 1) 是否是夏令时</div><div class="line"></div><div class="line">#Normal format</div><div class="line">&gt;&gt;&gt;ISOTIMEFORMAT=&apos;%Y-%m-%d %X&apos;</div><div class="line">&gt;&gt;&gt;time.strftime(ISOTIMEFORMAT, time.gmtime(time.time())) # 零时区时间</div><div class="line">&apos;2017-10-11 06:49:37&apos;</div><div class="line"></div><div class="line">&gt;&gt;&gt;time.strftime(ISOTIMEFORMAT, time.localtime(time.time())) # 本时区时间</div><div class="line">&apos;2017-10-11 14:38:29&apos;</div><div class="line">&gt;&gt;&gt;time.timezone/3600 #当前时区</div><div class="line">-8</div></pre></td></tr></table></figure></li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/" data-id="cj99xrz670006bkboedq8af86" class="article-share-link">Share</a>
+      <a data-url="http://www.taojinglong.com/2017/10/27/python小知识点/" data-id="cj99xwlsu0005odbo0vu97fj8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -170,6 +167,10 @@
       <ul>
         
           <li>
+            <a href="/2017/10/27/python小知识点/">用于记录Python的知识点</a>
+          </li>
+        
+          <li>
             <a href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/">ubuntu+github+hexo+aliyun搭建个人博客</a>
           </li>
         
@@ -183,10 +184,6 @@
         
           <li>
             <a href="/2017/10/27/StackingClassifier/">StackingClassifier</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/27/OpenCV的等高线画法/">OpenCV的等高线画法</a>
           </li>
         
       </ul>
