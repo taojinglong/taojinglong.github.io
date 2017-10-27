@@ -55,9 +55,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.taojinglong.com"></form>
@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-OpenCV的等高线画法" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-StackingClassifier" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/10/27/OpenCV的等高线画法/" class="article-date">
-  <time datetime="2017-10-27T13:01:08.661Z" itemprop="datePublished">2017-10-27</time>
+    <a href="/2017/10/27/StackingClassifier/" class="article-date">
+  <time datetime="2017-10-27T13:01:41.266Z" itemprop="datePublished">2017-10-27</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/27/OpenCV的等高线画法/">OpenCV的等高线画法</a>
+      <a class="article-title" href="/2017/10/27/StackingClassifier/">StackingClassifier</a>
     </h1>
   
 
@@ -90,17 +90,163 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>用于圈出图片上颜色深浅不同的区域</p>
-<p>处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io,color</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> cv2</div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line">plt.style.use(<span class="string">'classic'</span>)</div></pre></td></tr></table></figure></p>
-<p>1.读取图片，并二值化<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">img = io.imread(<span class="string">'img.JPG'</span>)</div><div class="line">gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</div><div class="line"></div><div class="line"><span class="comment"># ret 值多凭感觉</span></div><div class="line">thresh = np.ones_like(gray)</div><div class="line">ret = <span class="number">55</span></div><div class="line">thresh[gray &lt; ret] = <span class="number">255</span></div><div class="line">thresh[gray &gt; ret] = <span class="number">0</span></div><div class="line"></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(img)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(gray,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(thresh,<span class="string">'gray'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
-<p>2.降噪，扩张并获得距离参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># noise removal</span></div><div class="line">kernel = np.ones((<span class="number">3</span>,<span class="number">3</span>),np.uint8)</div><div class="line">opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = <span class="number">2</span>)</div><div class="line"></div><div class="line"><span class="comment"># sure background area</span></div><div class="line">sure_bg = cv2.dilate(opening,kernel,iterations=<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># Finding sure foreground area</span></div><div class="line">dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2,<span class="number">5</span>)</div><div class="line"></div><div class="line"><span class="comment"># distanceTransform</span></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(opening,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(sure_bg,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(dist_transform,<span class="string">'gray'</span>)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
-<p>3.滑动调节等高线高度，绘制等高线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">thresh = <span class="number">0.1</span> <span class="comment"># 高度调节</span></div><div class="line">ret, sure_fg = cv2.threshold(dist_transform,thresh*dist_transform.max(),<span class="number">255</span>,<span class="number">0</span>)</div><div class="line">sure_fg = np.uint8(sure_fg)</div><div class="line">median_img = cv2.medianBlur(sure_fg,<span class="number">17</span>)　<span class="comment"># smoothing</span></div><div class="line"></div><div class="line"><span class="comment"># find contours</span></div><div class="line">_, contours, _ = cv2.findContours(median_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)</div><div class="line">img_ground = redspot.copy()</div><div class="line">cv2.drawContours(img_ground,contours,<span class="number">-1</span>,(<span class="number">0</span>,<span class="number">255</span>,<span class="number">225</span>),<span class="number">10</span>)</div><div class="line"></div><div class="line">plt.subplot(<span class="number">121</span>),plt.imshow(median_img,<span class="string">'gray'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.subplot(<span class="number">122</span>),plt.imshow(img_ground),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
-<p>图片太大，无法上传，有时间会选择一张合适的图片重新做一边，让读者看起来更加直观。</p>
+        <h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>scikit-learn 官网的Ensemble methods 文档部分只介绍了/bagging / boosting / voting / 三种模型组合方式;但是通过查找学习，受周志华《机器学习》集成学习部分的学习法启发，了解并学习了 stacking，在此以作记录。</p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Stacking 是一种集合学习技术，通过元分类器组合多个分类模型。基于完整训练集训练各个分类模型; 然后，基于整体中的各个分类模型的输出 - 元特征来拟合元分类器。元分类器可以根据预测类标签或来自集合的概率进行训练。</p>
+<p><strong>流程图：</strong><br><img src="http://img.blog.csdn.net/20170307143221075?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="流程图"><br>OR<br><img src="http://img.blog.csdn.net/20170313215340227?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p><strong>算法总结：</strong><br><img src="http://img.blog.csdn.net/20170307143357210?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<hr>
+<h1 id="下面直接上实现过程"><a href="#下面直接上实现过程" class="headerlink" title="下面直接上实现过程"></a>下面直接上实现过程</h1><p>环境</p>
+<ul>
+<li>ubantu 16.04 + jupyter + python2.7</li>
+<li>scikit-learn +  mlxtend + anconda </li>
+</ul>
+<h2 id="示例1-基础StackingClassifier"><a href="#示例1-基础StackingClassifier" class="headerlink" title="示例1.基础StackingClassifier"></a>示例1.基础StackingClassifier</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">from sklearn import model_selection</div><div class="line">from sklearn.linear_model import LogisticRegression</div><div class="line">from sklearn.neighbors import KNeighborsClassifier</div><div class="line">from sklearn.naive_bayes import GaussianNB </div><div class="line">from sklearn.ensemble import RandomForestClassifier</div><div class="line">from mlxtend.classifier import StackingClassifier</div><div class="line">import numpy as np</div><div class="line"></div><div class="line">clf1 = KNeighborsClassifier(n_neighbors=1)</div><div class="line">clf2 = RandomForestClassifier(random_state=1)</div><div class="line">clf3 = GaussianNB()</div><div class="line">lr = LogisticRegression()</div><div class="line">sclf = StackingClassifier(classifiers=[clf1, clf2, clf3], </div><div class="line">                          meta_classifier=lr)</div><div class="line"></div><div class="line">print(&apos;3-fold cross validation:\n&apos;)</div><div class="line"></div><div class="line">for clf, label in zip([clf1, clf2, clf3, sclf], </div><div class="line">                      [&apos;KNN&apos;, </div><div class="line">                       &apos;Random Forest&apos;, </div><div class="line">                       &apos;Naive Bayes&apos;,</div><div class="line">                       &apos;StackingClassifier&apos;]):</div><div class="line"></div><div class="line">    scores = model_selection.cross_val_score(clf, X, y, </div><div class="line">                                              cv=3, scoring=&apos;accuracy&apos;)</div><div class="line">    print(&quot;Accuracy: %0.2f (+/- %0.2f) [%s]&quot; </div><div class="line">          % (scores.mean(), scores.std(), label))</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">3-fold cross validation:</div><div class="line"></div><div class="line">Accuracy: 0.91 (+/- 0.01) [KNN]</div><div class="line">Accuracy: 0.91 (+/- 0.06) [Random Forest]</div><div class="line">Accuracy: 0.92 (+/- 0.03) [Naive Bayes]</div><div class="line">Accuracy: 0.95 (+/- 0.03) [StackingClassifier]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import matplotlib.pyplot as plt</div><div class="line">from mlxtend.plotting import plot_decision_regions</div><div class="line">import matplotlib.gridspec as gridspec</div><div class="line">import itertools</div><div class="line"></div><div class="line">gs = gridspec.GridSpec(2, 2)</div><div class="line"></div><div class="line">fig = plt.figure(figsize=(10,8))</div><div class="line"></div><div class="line">for clf, lab, grd in zip([clf1, clf2, clf3, sclf], </div><div class="line">                         [&apos;KNN&apos;, </div><div class="line">                          &apos;Random Forest&apos;, </div><div class="line">                          &apos;Naive Bayes&apos;,</div><div class="line">                          &apos;StackingClassifier&apos;],</div><div class="line">                          itertools.product([0, 1], repeat=2)):</div><div class="line"></div><div class="line">    clf.fit(X, y)</div><div class="line">    ax = plt.subplot(gs[grd[0], grd[1]])</div><div class="line">    fig = plot_decision_regions(X=X, y=y, clf=clf)</div><div class="line">    plt.title(lab)</div></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20170307144231395?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<hr>
+<h2 id="示例2-使用概率作为原特征的分类"><a href="#示例2-使用概率作为原特征的分类" class="headerlink" title="示例2.使用概率作为原特征的分类"></a>示例2.使用概率作为原特征的分类</h2><p>或者，第一级分类器的类概率可用于通过设置来训练元分类器（第二级分类器）use_probas=True。如果average_probas=True，平均1级分类器的概率，如果average_probas=False，概率被学习法（推荐）。例如，在具有2个1级分类器的3类设置中，这些分类器可以对1个训练样本进行以下“概率”预测：</p>
+<ul>
+<li>分类器1：[0.2,0.5,0.3]</li>
+<li>分类器2：[0.3,0.4,0.4]</li>
+</ul>
+<p>如果average_probas=True，元特征将是：</p>
+<ul>
+<li>[0.25,0.45,0.35]</li>
+</ul>
+<p>相反，使用average_probas=Falsek个特征中的结果，其中，k = [n_classes * n_classifiers]，通过学习法这些1级概率：</p>
+<ul>
+<li>[0.2,0.5,0.3,0.3,0.4,0.4]</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">clf1 = KNeighborsClassifier(n_neighbors=1)</div><div class="line">clf2 = RandomForestClassifier(random_state=1)</div><div class="line">clf3 = GaussianNB()</div><div class="line">lr = LogisticRegression()</div><div class="line">sclf = StackingClassifier(classifiers=[clf1, clf2, clf3],</div><div class="line">                          use_probas=True,</div><div class="line">                          average_probas=False,</div><div class="line">                          meta_classifier=lr)</div><div class="line"></div><div class="line">print(&apos;3-fold cross validation:\n&apos;)</div><div class="line"></div><div class="line">for clf, label in zip([clf1, clf2, clf3, sclf], </div><div class="line">                      [&apos;KNN&apos;, </div><div class="line">                       &apos;Random Forest&apos;, </div><div class="line">                       &apos;Naive Bayes&apos;,</div><div class="line">                       &apos;StackingClassifier&apos;]):</div><div class="line"></div><div class="line">    scores = model_selection.cross_val_score(clf, X, y, </div><div class="line">                                              cv=3, scoring=&apos;accuracy&apos;)</div><div class="line">    print(&quot;Accuracy: %0.2f (+/- %0.2f) [%s]&quot; </div><div class="line">          % (scores.mean(), scores.std(), label))</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">3-fold cross validation:</div><div class="line">Accuracy: 0.91 (+/- 0.01) [KNN]</div><div class="line">Accuracy: 0.91 (+/- 0.06) [Random Forest]</div><div class="line">Accuracy: 0.92 (+/- 0.03) [Naive Bayes]</div><div class="line">Accuracy: 0.94 (+/- 0.03) [StackingClassifier]</div></pre></td></tr></table></figure>
+<h2 id="示例3-学习法分类和GridSearch"><a href="#示例3-学习法分类和GridSearch" class="headerlink" title="示例3 - 学习法分类和GridSearch"></a>示例3 - 学习法分类和GridSearch</h2><p>要为scikit-learn设置参数网格GridSearch，需在参数网格中提供分类器的名称 - 在元回归的特殊情况下，添加’meta-‘前缀。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">from sklearn.linear_model import LogisticRegression</div><div class="line">from sklearn.neighbors import KNeighborsClassifier</div><div class="line">from sklearn.naive_bayes import GaussianNB </div><div class="line">from sklearn.ensemble import RandomForestClassifier</div><div class="line">from sklearn.model_selection import GridSearchCV</div><div class="line">from mlxtend.classifier import StackingClassifier</div><div class="line"></div><div class="line"># Initializing models</div><div class="line"></div><div class="line">clf1 = KNeighborsClassifier(n_neighbors=1)</div><div class="line">clf2 = RandomForestClassifier(random_state=1)</div><div class="line">clf3 = GaussianNB()</div><div class="line">lr = LogisticRegression()</div><div class="line">sclf = StackingClassifier(classifiers=[clf1, clf2, clf3], </div><div class="line">                          meta_classifier=lr)</div><div class="line"></div><div class="line">params = &#123;&apos;kneighborsclassifier__n_neighbors&apos;: [1, 5],</div><div class="line">          &apos;randomforestclassifier__n_estimators&apos;: [10, 50],</div><div class="line">          &apos;meta-logisticregression__C&apos;: [0.1, 10.0]&#125;</div><div class="line"></div><div class="line">grid = GridSearchCV(estimator=sclf, </div><div class="line">                    param_grid=params, </div><div class="line">                    cv=5,</div><div class="line">                    refit=True)</div><div class="line">grid.fit(X, y)</div><div class="line"></div><div class="line">cv_keys = (&apos;mean_test_score&apos;, &apos;std_test_score&apos;, &apos;params&apos;)</div><div class="line"></div><div class="line">for r, _ in enumerate(grid.cv_results_[&apos;mean_test_score&apos;]):</div><div class="line">    print(&quot;%0.3f +/- %0.2f %r&quot;</div><div class="line">          % (grid.cv_results_[cv_keys[0]][r],</div><div class="line">             grid.cv_results_[cv_keys[1]][r] / 2.0,</div><div class="line">             grid.cv_results_[cv_keys[2]][r]))</div><div class="line"></div><div class="line">print(&apos;Best parameters: %s&apos; % grid.best_params_)</div><div class="line">print(&apos;Accuracy: %.2f&apos; % grid.best_score_)</div></pre></td></tr></table></figure>
+<p>在此对于寻参方法，与之前的VoteClassifier 设计相同，但是作者本身还是更喜欢将一级分类器逐个寻优 -&gt;之后才带入一级模型训练 - &gt; 接着二级分类器模型寻参 -&gt; 二级模型训练</p>
+<p>如果我们计划多次使用回归算法，我们需要做的是在参数网格中添加一个额外的数字后缀，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">from sklearn.model_selection import GridSearchCV</div><div class="line"></div><div class="line"># Initializing models</div><div class="line"></div><div class="line">clf1 = KNeighborsClassifier(n_neighbors=1)</div><div class="line">clf2 = RandomForestClassifier(random_state=1)</div><div class="line">clf3 = GaussianNB()</div><div class="line">lr = LogisticRegression()</div><div class="line">sclf = StackingClassifier(classifiers=[clf1, clf1, clf2, clf3],  # 此处变化</div><div class="line">                          meta_classifier=lr)</div><div class="line"></div><div class="line">params = &#123;&apos;kneighborsclassifier-1__n_neighbors&apos;: [1, 5],</div><div class="line">          &apos;kneighborsclassifier-2__n_neighbors&apos;: [1, 5],   # 此处变化</div><div class="line">          &apos;randomforestclassifier__n_estimators&apos;: [10, 50],</div><div class="line">          &apos;meta-logisticregression__C&apos;: [0.1, 10.0]&#125;</div><div class="line"></div><div class="line">grid = GridSearchCV(estimator=sclf, </div><div class="line">                    param_grid=params, </div><div class="line">                    cv=5,</div><div class="line">                    refit=True)</div><div class="line">grid.fit(X, y)</div><div class="line"></div><div class="line">cv_keys = (&apos;mean_test_score&apos;, &apos;std_test_score&apos;, &apos;params&apos;)</div><div class="line"></div><div class="line">for r, _ in enumerate(grid.cv_results_[&apos;mean_test_score&apos;]):</div><div class="line">    print(&quot;%0.3f +/- %0.2f %r&quot;</div><div class="line">          % (grid.cv_results_[cv_keys[0]][r],</div><div class="line">             grid.cv_results_[cv_keys[1]][r] / 2.0,</div><div class="line">             grid.cv_results_[cv_keys[2]][r]))</div><div class="line"></div><div class="line">print(&apos;Best parameters: %s&apos; % grid.best_params_)</div><div class="line">print(&apos;Accuracy: %.2f&apos; % grid.best_score_)</div></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="API-说明"><a href="#API-说明" class="headerlink" title="API 说明"></a>API 说明</h2><p>StackingClassifier（classifiers，meta_classifier，use_probas = False，average_probas = False，verbose = 0）</p>
+<p><strong>参数</strong></p>
+<ul>
+<li><p>classifiers ：array-like，shape = [n_classifiers]</p>
+<p> 一级分类器列表</p>
+</li>
+<li><p>meta_classifier ：Object</p>
+<p> 二级分类器（元分类器）</p>
+</li>
+<li><p>use_probas ：bool（默认值：False）</p>
+<p> 如果为True，则基于预测的概率而不是类标签来训练元分类器。</p>
+</li>
+<li><p>average_probas ：bool（默认值：False）</p>
+<p> 如果为真，将概率平均为元特征。</p>
+</li>
+<li><p>verbose ：int，optional（default = 0）</p>
+<p> Controls the verbosity of the building process. - verbose=0 (default): Prints nothing - verbose=1: Prints the number &amp; name of the regressor being fitted - verbose=2: Prints info about the parameters of the regressor being fitted - verbose&gt;2: Changes verbose param of the underlying regressor to self.verbose - 2</p>
+</li>
+</ul>
+<p><strong>属性</strong></p>
+<ul>
+<li><p>clfs_ ：list，shape = [n_classifiers]</p>
+<p> 一级分类器</p>
+</li>
+<li><p>meta<em>clf</em> ：estimators器</p>
+<p> 二级分类器（元分类器）</p>
+</li>
+</ul>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>fit（X，y）<br>拟合合成分类器和元分类器。</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><p>X ：{array-like，sparse matrix}，shape = [n_samples，n_features]</p>
+<p> 训练向量，其中n_samples是样本的数量，n_features是特征的数量。</p>
+</li>
+<li><p>y ：array-like，shape = [n_samples]</p>
+<p> target values。</p>
+</li>
+</ul>
+<p><strong>Returns</strong><br>    self ：Object</p>
+<hr>
+<p>fit_transform（X，y = None，fit_params）</p>
+<p>进行数据规整化</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><p>X ：numpy array of shape [n_samples, n_features]</p>
+<p> 训练集</p>
+</li>
+<li><p>y ：numpy array of shape [n_samples]</p>
+<p> 标签</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><p>X_new ：numpy array of shape [n_samples, n_features_new]</p>
+<p> 转换数组</p>
+</li>
+</ul>
+<hr>
+<p> get_params（deep = True）</p>
+<p>返回GridSearch支持的estimators参数名称。</p>
+<hr>
+<p>predict(X)</p>
+<p>预测X的标签</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><p>X ：{array-like，sparse matrix}，shape = [n_samples，n_features]</p>
+<p> 训练向量，其中n_samples是样本的数量，n_features是特征的数量。</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>labels ：array-like，shape = [n_samples]</li>
+</ul>
+<p>Predicted class labels.</p>
+<hr>
+<p> predict_proba（X）</p>
+<p>Predict class probabilities for X.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><p>X ：{array-like，sparse matrix}，shape = [n_samples，n_features]</p>
+<p> 训练向量，其中n_samples是样本的数量，n_features是特征的数量。</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><p>proba ：array-like，shape = [n_samples，n_classes]</p>
+<p> 每个样本的概率。</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><p>score（X，y，sample_weight = None）</p>
+<p> Returns the mean accuracy on the given test data and labels.</p>
+</li>
+</ul>
+<p>在多标签分类中，这是子集精度，其是苛刻的度量，因为对于每个样本需要正确地预测每个标号集合。</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><p>X ：array-like，shape =（n_samples，n_features）</p>
+<p> 测试</p>
+</li>
+<li><p>y ：array-like，shape =（n_samples）或（n_samples，n_outputs）</p>
+<p> X的真实标签。</p>
+</li>
+<li><p>sample_weight ：array-like，shape = [n_samples]，可选</p>
+</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><p>score ：float</p>
+<p> Mean accuracy of self.predict(X) wrt. y.</p>
+</li>
+</ul>
+<hr>
+<p>set_params（params）</p>
+<p>设置estimators的参数。</p>
+<p>该方法适用于简单estimators以及嵌套对象（例如pipelines）后者具有形式的参数 <component>__<parameter> 以便可以更新嵌套对象的每个组件。</parameter></component></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2017/10/27/OpenCV的等高线画法/" data-id="cj99xlej9000281boxzi0vl4p" class="article-share-link">Partager</a>
+      <a data-url="http://www.taojinglong.com/2017/10/27/StackingClassifier/" data-id="cj99xrz610003bkbouxlo4lwe" class="article-share-link">Share</a>
       
       
     </footer>
@@ -139,9 +285,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/">ubuntu+github+hexo+aliyun搭建个人博客</a>
+          </li>
         
           <li>
             <a href="/2017/10/27/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
@@ -159,10 +309,6 @@
             <a href="/2017/10/27/OpenCV的等高线画法/">OpenCV的等高线画法</a>
           </li>
         
-          <li>
-            <a href="/2017/10/27/python小知识点/">用于记录Python的知识点</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -176,7 +322,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 mote<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

@@ -55,9 +55,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.taojinglong.com"></form>
@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Ubuntu下安装部分常用软件历程" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-图片处理之模式匹配（match_template）" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/10/27/Ubuntu下安装部分常用软件历程/" class="article-date">
-  <time datetime="2017-10-27T13:02:02.014Z" itemprop="datePublished">2017-10-27</time>
+    <a href="/2017/10/27/图片处理之模式匹配（match_template）/" class="article-date">
+  <time datetime="2017-10-27T13:03:10.205Z" itemprop="datePublished">2017-10-27</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/27/Ubuntu下安装部分常用软件历程/">Ubuntu下安装部分常用软件历程</a>
+      <a class="article-title" href="/2017/10/27/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
     </h1>
   
 
@@ -90,30 +90,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>不喜欢用虚拟机，也不习惯在win下开发，但是也不能放弃win，那好吧，干脆装个双系统吧ubuntu17.04 + win10</p>
-<p>Ubuntu开发虽好，但是使用起来如何更加顺手，还得自己配置一番。</p>
-<h1 id="1-系统安装篇"><a href="#1-系统安装篇" class="headerlink" title="1.系统安装篇"></a>1.系统安装篇</h1><p>略…</p>
-<h1 id="2-软件安装篇"><a href="#2-软件安装篇" class="headerlink" title="2.软件安装篇"></a>2.软件安装篇</h1><h3 id="QQ安装"><a href="#QQ安装" class="headerlink" title="QQ安装"></a>QQ安装</h3><p>习惯使用QQ的人才会想在Linux下安装QQ（80/90后），安装起来也不是一般的遭罪…<br>首先说明的是Ubuntu下装的QQ与win下的相比真的很差劲，准备下手的同学们请做好心理准备。</p>
-<ul>
-<li>1.下载wineQQ国际版，优麒麟提供<a href="http://www.ubuntukylin.com/application/show.php?lang=cn&amp;id=279" target="_blank" rel="external">下载</a></li>
-<li>2.下载ibpng12-0_1.2.54-1ubuntu1_i386.deb 链接: <a href="https://pan.baidu.com/s/1cllr10" target="_blank" rel="external">https://pan.baidu.com/s/1cllr10</a> 密码: 3xqu（这一步是因为ubuntu16.10之后源里面不再有libpng12这个包了，会包依赖错误，需要我们手动安装）</li>
-<li><p>3.终端输入<figure class="highlight plain"><figcaption><span>dpkg --add-architecture i386```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 4.打开下载目录，终端输入```sudo dpkg -i libpng12-0_1.2.54-1ubuntu1_i386.deb</div></pre></td></tr></table></figure></p>
-</li>
-<li><p>5.解压wineQQ压缩包，进入该目录后终端输入<code>sudo dpkg -i fonts-wqy-microhei_0.2.0-beta-2_all.deb ttf-wqy-microhei_0.2.0-beta-2_all.deb wine-qqintl_0.1.3-2_i386.deb</code></p>
-</li>
-<li>6.如果报依赖错误，输入：sudo apt-get install -f</li>
-<li>7.解决依赖后再执行步骤5</li>
-</ul>
-<p>如下图<br><img src="http://img.blog.csdn.net/20171020124854643?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p><img src="http://img.blog.csdn.net/20171020125253514?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>这个版本qq登录时会报 “…..暂时不能使用低版本的QQ…..” ，这是由于被安全机制检测到版本太低，需要手机登录qq将手机设备锁关掉才行。其他问题尚无。</p>
-<h3 id="WeChat安装"><a href="#WeChat安装" class="headerlink" title="WeChat安装"></a>WeChat安装</h3><p>作为统一老中幼三代，纵横生活、工作、学习各大圈子的通讯软件，那么存在于Ubuntu上也就不那么奇怪了</p>
-<p>待续……</p>
+        <p>以一张脸部皮肤切片中的毛孔作为研究对象，使用模式匹配寻找到该切片中所有的毛孔</p>
+<h2 id="1-选取切片，并找到匹配对象"><a href="#1-选取切片，并找到匹配对象" class="headerlink" title="1.选取切片，并找到匹配对象"></a>1.选取切片，并找到匹配对象</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">from skimage.feature import match_template</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">img_gray = cv2.cvtColor(img_o,cv2.COLOR_BGR2GRAY)</div><div class="line">img_kernel = img_gray[<span class="number">255</span>:<span class="number">295</span>,<span class="number">460</span>:<span class="number">500</span>]</div><div class="line"></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(img_o)</div><div class="line">plt.title(<span class="string">'original'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(img_gray,<span class="string">'gray'</span>)</div><div class="line">plt.title(<span class="string">'gray'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(img_kernel,<span class="string">'gray'</span>)</div><div class="line">plt.title(<span class="string">'template'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20170912153707130?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>如上图所示，左边图为皮肤切片原图，中间为灰度图，右边为选中的匹配对象</p>
+<h2 id="2-match-template"><a href="#2-match-template" class="headerlink" title="2.match_template"></a>2.match_template</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">result = match_template(img_gray, img_kernel, pad_input=<span class="keyword">True</span>, mode=<span class="string">'constant'</span>, constant_values=<span class="number">0</span>)</div><div class="line">plt.subplot(<span class="number">121</span>),plt.imshow(img_gray,<span class="string">'gray'</span>)</div><div class="line">plt.title(<span class="string">'img_gray'</span>)</div><div class="line">plt.subplot(<span class="number">122</span>),plt.imshow(result,<span class="string">'gray'</span>)</div><div class="line">plt.title(<span class="string">'match_template'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20170912154500701?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>匹配结果如上图右所示，其中亮度较高的部分即我们所寻找的部分</p>
+<p>接下来我们要让这张图看起来，更加明显，所以进行二值化操作，并降噪<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mask = np.ones_like(result)</div><div class="line">mask[result &gt; 0.4] = 255</div><div class="line">mask[result &lt; 0.4] = 0</div><div class="line">plt.subplot(121),plt.imshow(mask,&apos;gray&apos;),plt.title(&apos;threshold&apos;)</div><div class="line"></div><div class="line"># open</div><div class="line">kernel = np.ones((2,2),np.uint8)</div><div class="line">th_mor = cv2.morphologyEx(mask,cv2.MORPH_OPEN,kernel, iterations = 3)</div><div class="line">plt.subplot(122),plt.imshow(th_mor,&apos;gray&apos;),plt.title(&apos;open&apos;),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20170912155020094?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>如此我们已经得到毛孔的轮廓图，不过这样看是不是太抽象了，ok，那么我们就把它画到原图上看一下</p>
+<h2 id="3-draw-contours"><a href="#3-draw-contours" class="headerlink" title="3.draw contours"></a>3.draw contours</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># 寻找轮廓</div><div class="line"> _, contour_total, _ = cv2.findContours(th_mor, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)</div><div class="line"></div><div class="line"># 绘制筛选后的轮廓</div><div class="line">img_ground = img_o.copy()</div><div class="line">cv2.drawContours(img_ground,new_contours,-1,(0,255,255),2)</div><div class="line"></div><div class="line">fig = plt.figure(figsize=(12, 9))</div><div class="line">axes = np.zeros((3, 3), dtype=np.object)</div><div class="line">axes[0, 0] = plt.subplot(231),plt.imshow(img_o),plt.title(&apos;original image&apos;)</div><div class="line">axes[0, 1] = plt.subplot(232),plt.imshow(img_ground),plt.title(&apos;contours&apos;)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p><img src="http://img.blog.csdn.net/20170912155844267?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>至此模式匹配的简单应用就算结束了。准确率什么的仅仅凭借我们肉眼观察是无法断定的，在此我们可以人工在原图上标注出毛孔的轮廓，然后与模式匹配结果进行比较，下面贴上作者尝试标注的图与模式匹配结果的对比（人工标注比较随意）</p>
+<p><img src="http://img.blog.csdn.net/20170912160358089?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>其中第二部分，模式匹配方法应用及二值化操作过程中，参数设置决定匹配结果。<br>另外，在各种方法使用过程中，发现LBP效果也挺好。</p>
+<p><strong>补充：</strong>上述第二部分方法是采用skimage的match_template，最近因为工作需要，又做了一份opencv的方法，具体如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import cv2</div><div class="line">img_match = cv2.matchTemplate(img_gray, img_kernel, cv2.TM_CCOEFF_NORMED)</div><div class="line"></div><div class="line"># 给匹配图补黑边，解决cv2匹配过程中边缘忽略问题</div><div class="line">img_match = cv2.copyMakeBorder(img_match,0,img_kernel.shape[0]-1,0,img_kernel.shape[1]-1,cv2.BORDER_CONSTANT,value=(0, 0, 0))</div></pre></td></tr></table></figure></p>
+<p>经检测发现，两者效果接近，skimage效果稍优。</p>
+<p>本人邮箱:craftsman.mote@gmail.com,欢迎讨论。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2017/10/27/Ubuntu下安装部分常用软件历程/" data-id="cj99xlejc000481both7m0bxo" class="article-share-link">Partager</a>
+      <a data-url="http://www.taojinglong.com/2017/10/27/图片处理之模式匹配（match_template）/" data-id="cj99xrz690007bkbogono79xx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -152,9 +152,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/">ubuntu+github+hexo+aliyun搭建个人博客</a>
+          </li>
         
           <li>
             <a href="/2017/10/27/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
@@ -172,10 +176,6 @@
             <a href="/2017/10/27/OpenCV的等高线画法/">OpenCV的等高线画法</a>
           </li>
         
-          <li>
-            <a href="/2017/10/27/python小知识点/">用于记录Python的知识点</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -189,7 +189,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 mote<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

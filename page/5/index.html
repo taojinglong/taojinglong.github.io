@@ -55,9 +55,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.taojinglong.com"></form>
@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-python小知识点" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-OpenCV的等高线画法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/10/27/python小知识点/" class="article-date">
-  <time datetime="2017-10-27T13:00:06.789Z" itemprop="datePublished">2017-10-27</time>
+    <a href="/2017/10/27/OpenCV的等高线画法/" class="article-date">
+  <time datetime="2017-10-27T13:01:08.661Z" itemprop="datePublished">2017-10-27</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/27/python小知识点/">用于记录Python的知识点</a>
+      <a class="article-title" href="/2017/10/27/OpenCV的等高线画法/">OpenCV的等高线画法</a>
     </h1>
   
 
@@ -90,40 +90,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="用于记录Python的知识点"><a href="#用于记录Python的知识点" class="headerlink" title="用于记录Python的知识点"></a>用于记录Python的知识点</h1><hr>
-<h2 id="pip-相关"><a href="#pip-相关" class="headerlink" title="pip 相关"></a>pip 相关</h2><ul>
-<li><figure class="highlight plain"><figcaption><span>list``` 列出pip安装的所有包</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- ```pip list --outdated``` 列出可更新的包</div><div class="line">- ```pip install somepackage</div></pre></td></tr></table></figure>
-</li>
-<li><figure class="highlight plain"><figcaption><span>uninstall somepackage```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- ```pip install --upgrade somepackage</div></pre></td></tr></table></figure>
-</li>
-<li><figure class="highlight plain"><figcaption><span>install pip-review``` 、```pip-review --local --interactive``` 更新所有的包</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">----------</div><div class="line">## virtualenv相关</div><div class="line">virtualenv是管理不同Python环境的工具，这里介绍如何建立一个keras环境</div><div class="line"></div><div class="line">- 首先安装该包 ```pip install virtualenv</div></pre></td></tr></table></figure>
-</li>
-<li><p>建立虚拟环境目录 <figure class="highlight plain"><figcaption><span>$HOME/.virtualenvs```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 在该目录内建立keras环境 ```virtualenv keras</div></pre></td></tr></table></figure></p>
-</li>
-<li><p>启动运行keras环境 <figure class="highlight plain"><figcaption><span>keras/bin/activate```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- 停止运行 deactivate</div><div class="line">- 如果没有启动虚拟环境，系统也安装了pip工具，那么```pip install ..```将被安装在系统环境中，为了避免发生此事，可以在~/.bashrc文件中加上：```export PIP_REQUIRE_VIRTUALENV=true</div></pre></td></tr></table></figure></p>
-</li>
-<li><p>如下图所示步骤：<br><img src="http://img.blog.csdn.net/20171011162835392?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>  至此已经结束，但是每次运行keras都要<figure class="highlight plain"><figcaption><span>/../..activate``` 是不是有点费事呢，下面使用virtualenvwrapper工具辅助管理虚拟环境</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">- 安装该包 ```sudo pip install virtualenvwrapper</div></pre></td></tr></table></figure></p>
-</li>
-<li><p>在~/.bashrc中添加行：<figure class="highlight plain"><figcaption><span>WORKON_HOME</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 在~/.bashrc中添加行：```source /usr/local/bin/virtualenvwrapper.sh</div></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<p><img src="http://img.blog.csdn.net/20171011163905185?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<ul>
-<li><p>运行： <figure class="highlight plain"><figcaption><span>~/.bashrc```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 列出所有虚拟环境 ```workon</div></pre></td></tr></table></figure></p>
-</li>
-<li><p>启动运行虚拟环境 <figure class="highlight plain"><figcaption><span>keras```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- 如下步骤</div><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171011164153811?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">- 删除虚拟环境 ```rmvirtualenv keras</div></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<hr>
-<h2 id="时间相关"><a href="#时间相关" class="headerlink" title="时间相关"></a>时间相关</h2><ul>
-<li>time<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#获取当前时间，时区</div><div class="line">&gt;&gt;&gt;import time </div><div class="line">&gt;&gt;&gt;time.time() #当前时间（距离1970年1月1日 00:00:00的秒数，即时间戳）</div><div class="line">1507705104.837813</div><div class="line"></div><div class="line">&gt;&gt;&gt;time.localtime() </div><div class="line">time.struct_time(tm_year=2017, tm_mon=10, tm_mday=11, tm_hour=14, tm_min=43, tm_sec=8, tm_wday=2, tm_yday=284, tm_isdst=0)</div><div class="line">#输出解释：year，month (1-12)，day (1-31)，hours (0-23)，minutes (0-59)，seconds (0-59)，weekday (0-6, Monday is 0)，Julian day (day in the year, 1-366)，DST (Daylight Savings Time) ，flag (-1, 0 or 1) 是否是夏令时</div><div class="line"></div><div class="line">#Normal format</div><div class="line">&gt;&gt;&gt;ISOTIMEFORMAT=&apos;%Y-%m-%d %X&apos;</div><div class="line">&gt;&gt;&gt;time.strftime(ISOTIMEFORMAT, time.gmtime(time.time())) # 零时区时间</div><div class="line">&apos;2017-10-11 06:49:37&apos;</div><div class="line"></div><div class="line">&gt;&gt;&gt;time.strftime(ISOTIMEFORMAT, time.localtime(time.time())) # 本时区时间</div><div class="line">&apos;2017-10-11 14:38:29&apos;</div><div class="line">&gt;&gt;&gt;time.timezone/3600 #当前时区</div><div class="line">-8</div></pre></td></tr></table></figure></li>
-</ul>
+        <p>用于圈出图片上颜色深浅不同的区域</p>
+<p>处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io,color</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> cv2</div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line">plt.style.use(<span class="string">'classic'</span>)</div></pre></td></tr></table></figure></p>
+<p>1.读取图片，并二值化<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">img = io.imread(<span class="string">'img.JPG'</span>)</div><div class="line">gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</div><div class="line"></div><div class="line"><span class="comment"># ret 值多凭感觉</span></div><div class="line">thresh = np.ones_like(gray)</div><div class="line">ret = <span class="number">55</span></div><div class="line">thresh[gray &lt; ret] = <span class="number">255</span></div><div class="line">thresh[gray &gt; ret] = <span class="number">0</span></div><div class="line"></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(img)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(gray,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(thresh,<span class="string">'gray'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
+<p>2.降噪，扩张并获得距离参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># noise removal</span></div><div class="line">kernel = np.ones((<span class="number">3</span>,<span class="number">3</span>),np.uint8)</div><div class="line">opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = <span class="number">2</span>)</div><div class="line"></div><div class="line"><span class="comment"># sure background area</span></div><div class="line">sure_bg = cv2.dilate(opening,kernel,iterations=<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># Finding sure foreground area</span></div><div class="line">dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2,<span class="number">5</span>)</div><div class="line"></div><div class="line"><span class="comment"># distanceTransform</span></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(opening,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(sure_bg,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(dist_transform,<span class="string">'gray'</span>)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
+<p>3.滑动调节等高线高度，绘制等高线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">thresh = <span class="number">0.1</span> <span class="comment"># 高度调节</span></div><div class="line">ret, sure_fg = cv2.threshold(dist_transform,thresh*dist_transform.max(),<span class="number">255</span>,<span class="number">0</span>)</div><div class="line">sure_fg = np.uint8(sure_fg)</div><div class="line">median_img = cv2.medianBlur(sure_fg,<span class="number">17</span>)　<span class="comment"># smoothing</span></div><div class="line"></div><div class="line"><span class="comment"># find contours</span></div><div class="line">_, contours, _ = cv2.findContours(median_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)</div><div class="line">img_ground = redspot.copy()</div><div class="line">cv2.drawContours(img_ground,contours,<span class="number">-1</span>,(<span class="number">0</span>,<span class="number">255</span>,<span class="number">225</span>),<span class="number">10</span>)</div><div class="line"></div><div class="line">plt.subplot(<span class="number">121</span>),plt.imshow(median_img,<span class="string">'gray'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.subplot(<span class="number">122</span>),plt.imshow(img_ground),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
+<p>图片太大，无法上传，有时间会选择一张合适的图片重新做一边，让读者看起来更加直观。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2017/10/27/python小知识点/" data-id="cj99xlejd000581bo4mk1kcok" class="article-share-link">Partager</a>
+      <a data-url="http://www.taojinglong.com/2017/10/27/OpenCV的等高线画法/" data-id="cj99xrz5z0002bkbo6952m7hg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -162,9 +139,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/10/27/ubuntu+github+hexo+aliyun搭建个人博客/">ubuntu+github+hexo+aliyun搭建个人博客</a>
+          </li>
         
           <li>
             <a href="/2017/10/27/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
@@ -182,10 +163,6 @@
             <a href="/2017/10/27/OpenCV的等高线画法/">OpenCV的等高线画法</a>
           </li>
         
-          <li>
-            <a href="/2017/10/27/python小知识点/">用于记录Python的知识点</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -199,7 +176,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 mote<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
