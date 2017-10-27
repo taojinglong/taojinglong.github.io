@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>OpenCV的等高线画法 | 陶景龙的博客 | Mote</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="用于圈出图片上颜色深浅不同的区域 处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours12345from skimage import io,colorimport numpy as npimport cv2from matplotlib import pyplot as pltplt.style">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV的等高线画法">
+<meta property="og:url" content="http://www.taojinglong.com/2017/10/27/OpenCV的等高线画法/index.html">
+<meta property="og:site_name" content="陶景龙的博客 | Mote">
+<meta property="og:description" content="用于圈出图片上颜色深浅不同的区域 处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours12345from skimage import io,colorimport numpy as npimport cv2from matplotlib import pyplot as pltplt.style">
+<meta property="og:updated_time" content="2017-10-27T13:01:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV的等高线画法">
+<meta name="twitter:description" content="用于圈出图片上颜色深浅不同的区域 处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours12345from skimage import io,colorimport numpy as npimport cv2from matplotlib import pyplot as pltplt.style">
+  
+    <link rel="alternate" href="/atom.xml" title="陶景龙的博客 | Mote" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">陶景龙的博客 | Mote</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">桃之夭夭，灼灼其华</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.taojinglong.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-OpenCV的等高线画法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/27/OpenCV的等高线画法/" class="article-date">
+  <time datetime="2017-10-27T13:01:08.661Z" itemprop="datePublished">2017-10-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OpenCV的等高线画法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用于圈出图片上颜色深浅不同的区域</p>
+<p>处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io,color</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> cv2</div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line">plt.style.use(<span class="string">'classic'</span>)</div></pre></td></tr></table></figure></p>
+<p>1.读取图片，并二值化<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">img = io.imread(<span class="string">'img.JPG'</span>)</div><div class="line">gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</div><div class="line"></div><div class="line"><span class="comment"># ret 值多凭感觉</span></div><div class="line">thresh = np.ones_like(gray)</div><div class="line">ret = <span class="number">55</span></div><div class="line">thresh[gray &lt; ret] = <span class="number">255</span></div><div class="line">thresh[gray &gt; ret] = <span class="number">0</span></div><div class="line"></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(img)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(gray,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(thresh,<span class="string">'gray'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
+<p>2.降噪，扩张并获得距离参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># noise removal</span></div><div class="line">kernel = np.ones((<span class="number">3</span>,<span class="number">3</span>),np.uint8)</div><div class="line">opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = <span class="number">2</span>)</div><div class="line"></div><div class="line"><span class="comment"># sure background area</span></div><div class="line">sure_bg = cv2.dilate(opening,kernel,iterations=<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># Finding sure foreground area</span></div><div class="line">dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2,<span class="number">5</span>)</div><div class="line"></div><div class="line"><span class="comment"># distanceTransform</span></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(opening,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(sure_bg,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(dist_transform,<span class="string">'gray'</span>)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
+<p>3.滑动调节等高线高度，绘制等高线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">thresh = <span class="number">0.1</span> <span class="comment"># 高度调节</span></div><div class="line">ret, sure_fg = cv2.threshold(dist_transform,thresh*dist_transform.max(),<span class="number">255</span>,<span class="number">0</span>)</div><div class="line">sure_fg = np.uint8(sure_fg)</div><div class="line">median_img = cv2.medianBlur(sure_fg,<span class="number">17</span>)　<span class="comment"># smoothing</span></div><div class="line"></div><div class="line"><span class="comment"># find contours</span></div><div class="line">_, contours, _ = cv2.findContours(median_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)</div><div class="line">img_ground = redspot.copy()</div><div class="line">cv2.drawContours(img_ground,contours,<span class="number">-1</span>,(<span class="number">0</span>,<span class="number">255</span>,<span class="number">225</span>),<span class="number">10</span>)</div><div class="line"></div><div class="line">plt.subplot(<span class="number">121</span>),plt.imshow(median_img,<span class="string">'gray'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.subplot(<span class="number">122</span>),plt.imshow(img_ground),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
+<p>图片太大，无法上传，有时间会选择一张合适的图片重新做一边，让读者看起来更加直观。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.taojinglong.com/2017/10/27/OpenCV的等高线画法/" data-id="cj99ws3qm0002ivbouemd15xa" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/27/StackingClassifier/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          StackingClassifier
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/27/python小知识点/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">用于记录Python的知识点</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/10/27/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/27/Ubuntu下安装部分常用软件历程/">Ubuntu下安装部分常用软件历程</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/27/StackingClassifier/">StackingClassifier</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/27/OpenCV的等高线画法/">OpenCV的等高线画法</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/27/python小知识点/">用于记录Python的知识点</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 mote<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
