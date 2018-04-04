@@ -1,290 +1,285 @@
 
-<!DOCTYPE html>
-<html>
+ <!DOCTYPE HTML>
+<html >
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   
-  <title>OpenCV的等高线画法 | 陶景龙的博客 | Mote</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="用于圈出图片上颜色深浅不同的区域 处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours12345from skimage import io,colorimport numpy as npimport cv2from matplotlib import pyplot as pltplt.style">
-<meta property="og:type" content="article">
-<meta property="og:title" content="OpenCV的等高线画法">
-<meta property="og:url" content="http://www.taojinglong.com/2018/04/04/OpenCV的等高线画法/index.html">
-<meta property="og:site_name" content="陶景龙的博客 | Mote">
-<meta property="og:description" content="用于圈出图片上颜色深浅不同的区域 处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours12345from skimage import io,colorimport numpy as npimport cv2from matplotlib import pyplot as pltplt.style">
-<meta property="og:updated_time" content="2017-10-27T13:01:08.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenCV的等高线画法">
-<meta name="twitter:description" content="用于圈出图片上颜色深浅不同的区域 处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours12345from skimage import io,colorimport numpy as npimport cv2from matplotlib import pyplot as pltplt.style">
-  
-    <link rel="alternative" href="/atom.xml" title="陶景龙的博客 | Mote" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  <link rel="stylesheet" href="/css/style.css">
-  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
-  
+    <title>OpenCV的等高线画法 | 陶景龙的博客 | Mote</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="mote">
+    
+    <meta name="description" content="用于圈出图片上颜色深浅不同的区域
+处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours12345from skimage import io,colorimport numpy as npimpor">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
-<div id="container">
-  <div id="wrap">
-    <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">陶景龙的博客 | Mote</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">桃之夭夭，灼灼其华</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
-          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
-          <input type="submit" value="" class="search-form-submit">
-          <input name=tn type=hidden value="bds">
-          <input name=cl type=hidden value="3">
-          <input name=ct type=hidden value="2097152">
-          <input type="hidden" name="si" value="www.taojinglong.com">
-        </form>
-      </div>
-    </div>
-  </div>
-</header>
-    <div class="outer">
-      <section id="main"><article id="post-OpenCV的等高线画法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/04/04/OpenCV的等高线画法/" class="article-date">
-  <time datetime="2018-04-04T09:27:41.589Z" itemprop="datePublished">2018-04-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      OpenCV的等高线画法
-    </h1>
-  
 
-      </header>
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="陶景龙的博客 | Mote" title="陶景龙的博客 | Mote"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="陶景龙的博客 | Mote">陶景龙的博客 | Mote</a></h1>
+				<h2 class="blog-motto">桃之夭夭，灼灼其华</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.taojinglong.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>用于圈出图片上颜色深浅不同的区域</p>
+      <a href="/2018/04/04/OpenCV的等高线画法/" title="OpenCV的等高线画法" itemprop="url">OpenCV的等高线画法</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://www.taojinglong.com" title="mote">mote</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2018-04-04T09:27:41.589Z" itemprop="datePublished">2018-04-04</time>
+    Updated:<time datetime="2017-10-27T13:01:08.000Z" itemprop="dateModified">2017-10-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+		</div>
+		
+		<p>用于圈出图片上颜色深浅不同的区域</p>
 <p>处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io,color</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> cv2</div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line">plt.style.use(<span class="string">'classic'</span>)</div></pre></td></tr></table></figure></p>
 <p>1.读取图片，并二值化<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">img = io.imread(<span class="string">'img.JPG'</span>)</div><div class="line">gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)</div><div class="line"></div><div class="line"><span class="comment"># ret 值多凭感觉</span></div><div class="line">thresh = np.ones_like(gray)</div><div class="line">ret = <span class="number">55</span></div><div class="line">thresh[gray &lt; ret] = <span class="number">255</span></div><div class="line">thresh[gray &gt; ret] = <span class="number">0</span></div><div class="line"></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(img)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(gray,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(thresh,<span class="string">'gray'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
 <p>2.降噪，扩张并获得距离参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># noise removal</span></div><div class="line">kernel = np.ones((<span class="number">3</span>,<span class="number">3</span>),np.uint8)</div><div class="line">opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = <span class="number">2</span>)</div><div class="line"></div><div class="line"><span class="comment"># sure background area</span></div><div class="line">sure_bg = cv2.dilate(opening,kernel,iterations=<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># Finding sure foreground area</span></div><div class="line">dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2,<span class="number">5</span>)</div><div class="line"></div><div class="line"><span class="comment"># distanceTransform</span></div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(opening,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(sure_bg,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(dist_transform,<span class="string">'gray'</span>)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
 <p>3.滑动调节等高线高度，绘制等高线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">thresh = <span class="number">0.1</span> <span class="comment"># 高度调节</span></div><div class="line">ret, sure_fg = cv2.threshold(dist_transform,thresh*dist_transform.max(),<span class="number">255</span>,<span class="number">0</span>)</div><div class="line">sure_fg = np.uint8(sure_fg)</div><div class="line">median_img = cv2.medianBlur(sure_fg,<span class="number">17</span>)　<span class="comment"># smoothing</span></div><div class="line"></div><div class="line"><span class="comment"># find contours</span></div><div class="line">_, contours, _ = cv2.findContours(median_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)</div><div class="line">img_ground = redspot.copy()</div><div class="line">cv2.drawContours(img_ground,contours,<span class="number">-1</span>,(<span class="number">0</span>,<span class="number">255</span>,<span class="number">225</span>),<span class="number">10</span>)</div><div class="line"></div><div class="line">plt.subplot(<span class="number">121</span>),plt.imshow(median_img,<span class="string">'gray'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">plt.subplot(<span class="number">122</span>),plt.imshow(img_ground),plt.xticks([]),plt.yticks([])</div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
 <p>图片太大，无法上传，有时间会选择一张合适的图片重新做一边，让读者看起来更加直观。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
 
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://www.taojinglong.com/2018/04/04/OpenCV的等高线画法/" data-id="cjfkx5k1m00020lf88fdtsjk3" class="article-share-link" data-share="baidu" data-title="OpenCV的等高线画法">Share</a>
-      
 
-      
-        <a href="http://www.taojinglong.com/2018/04/04/OpenCV的等高线画法/#ds-thread" class="article-comment-link">Comments</a>
-      
 
-      
-    </footer>
+
+<div class="article-share" id="share">
+
+  <div data-url="http://www.taojinglong.com/2018/04/04/OpenCV的等高线画法/" data-title="OpenCV的等高线画法 | 陶景龙的博客 | Mote" data-tsina="" class="share clearfix">
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2018/04/04/图片处理之模式匹配（match_template）/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          图片处理之模式匹配（match_template）
-        
-      </div>
-    </a>
-  
-  
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/04/图片处理之模式匹配（match_template）/" title="图片处理之模式匹配（match_template）">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  图片处理之模式匹配（match_template）</span>
+</a>
+</div>
+
+
 </nav>
 
-  
-</article>
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
-
-  <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2018/04/04/OpenCV的等高线画法/" data-title="OpenCV的等高线画法" data-url="http://www.taojinglong.com/2018/04/04/OpenCV的等高线画法/"></div>
-  </section>
-</section>
-      
-      <aside id="sidebar">
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
   
-    
-  
-    
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li></ul>
-    </div>
   </div>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/04/04/BaggingClassifier/">BaggingClassifier</a>
-          </li>
-        
-          <li>
-            <a href="/2018/04/04/BoostingClassifier/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/04/04/StackingClassifier/">StackingClassifier</a>
-          </li>
-        
-          <li>
-            <a href="/2018/04/04/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
-          </li>
-        
-          <li>
-            <a href="/2018/04/04/OpenCV的等高线画法/">OpenCV的等高线画法</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Links</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="https://github.com/taojinglong/" target="_blank">github</a>
-          </li>
-        
-          <li>
-            <a href="http://www.google.com/" target="_blank">google</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
 
   
+
+  <div class="rsspart">
+	<a href="" target="_blank" title="rss">RSS</a>
+</div>
+
 </aside>
-      
+</div>
     </div>
-    <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 mote<br>
-      Powered by <a href="//hexo.io/" target="_blank">Hexo</a>
-      .
-      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
-    </div>
-  </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2018 
+		
+		<a href="http://www.taojinglong.com" target="_blank" title="mote">mote</a>
+		
+		</p>
+</div>
 </footer>
-  </div>
-  <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-  <!-- totop start -->
-<div id="totop">
-<a title="totop"><img src="/img/scrollup.png"/></a>
-</div>
-
-<!-- totop end -->
-
-<!-- 多说公共js代码 start -->
+    <script src="/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
-var duoshuoQuery = {short_name:"reqianduan"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-     || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-  </script>
-<!-- 多说公共js代码 end -->
-
-
-<!-- 百度分享 start -->
-
-<div id="article-share-box" class="article-share-box">
-  <div id="bdshare" class="bdsharebuttonbox article-share-links">
-    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
-    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
-    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
-    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
-    <a class="article-share-more" data-cmd="more" title="更多"></a>
-  </div>
-</div>
-<script>
-  function SetShareData(cmd, config) {
-    if (shareDataTitle && shareDataUrl) {
-      config.bdText = shareDataTitle;
-      config.bdUrl = shareDataUrl;
-    }
-    return config;
-  }
-  window._bd_share_config={
-    "common":{onBeforeClick: SetShareData},
-    "share":{"bdCustomStyle":"/css/bdshare.css"}
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
   };
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
 </script>
 
-<!-- 百度分享 end -->
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
 
 
 
 
-<script src="/js/script.js"></script>
 
-</div>
-</body>
+
+  </body>
 </html>
