@@ -5,15 +5,24 @@
   
   <title>陶景龙的博客 | Mote</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="记录于此，不忘于心">
-<meta property="og:type" content="website">
+  <meta name="description" content="title写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboos">
+<meta property="og:type" content="article">
 <meta property="og:title" content="陶景龙的博客 | Mote">
-<meta property="og:url" content="http://www.taojinglong.com/page/6/index.html">
+<meta property="og:url" content="http://www.taojinglong.com/2018/04/04/BoostingClassifier/index.html">
 <meta property="og:site_name" content="陶景龙的博客 | Mote">
-<meta property="og:description" content="记录于此，不忘于心">
+<meta property="og:description" content="title写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboos">
+<meta property="og:image" content="http://img.blog.csdn.net/20170313164310516?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170313164649614?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170313164811460?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170313173836717?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170313171052678?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170313174847793?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170313181806672?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-10-27T12:57:58.203Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="陶景龙的博客 | Mote">
-<meta name="twitter:description" content="记录于此，不忘于心">
+<meta name="twitter:description" content="title写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboos">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170313164310516?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
   
     <link rel="alternate" href="/atom.xml" title="陶景龙的博客 | Mote" type="application/atom+xml">
   
@@ -66,9 +75,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-BoostingClassifier" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-BoostingClassifier" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/04/04/BoostingClassifier/" class="article-date">
   <time datetime="2018-04-04T09:27:41.585Z" itemprop="datePublished">2018-04-04</time>
@@ -186,15 +193,29 @@
     </footer>
   </div>
   
-</article>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/04/图片处理之模式匹配（match_template）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          图片处理之模式匹配（match_template）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/04/BaggingClassifier/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">BaggingClassifier</div>
+    </a>
+  
+</nav>
 
   
+</article>
 
-
-  <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">__('next') &raquo;</a>
-  </nav>
 </section>
         
           <aside id="sidebar">

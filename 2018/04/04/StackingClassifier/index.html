@@ -3,17 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>陶景龙的博客 | Mote</title>
+  <title>StackingClassifier | 陶景龙的博客 | Mote</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="记录于此，不忘于心">
-<meta property="og:type" content="website">
-<meta property="og:title" content="陶景龙的博客 | Mote">
-<meta property="og:url" content="http://www.taojinglong.com/page/8/index.html">
+  <meta name="description" content="写在前面scikit-learn 官网的Ensemble methods 文档部分只介绍了/bagging / boosting / voting / 三种模型组合方式;但是通过查找学习，受周志华《机器学习》集成学习部分的学习法启发，了解并学习了 stacking，在此以作记录。 概述Stacking 是一种集合学习技术，通过元分类器组合多个分类模型。基于完整训练集训练各个分类模型; 然后，基于整">
+<meta property="og:type" content="article">
+<meta property="og:title" content="StackingClassifier">
+<meta property="og:url" content="http://www.taojinglong.com/2018/04/04/StackingClassifier/index.html">
 <meta property="og:site_name" content="陶景龙的博客 | Mote">
-<meta property="og:description" content="记录于此，不忘于心">
+<meta property="og:description" content="写在前面scikit-learn 官网的Ensemble methods 文档部分只介绍了/bagging / boosting / voting / 三种模型组合方式;但是通过查找学习，受周志华《机器学习》集成学习部分的学习法启发，了解并学习了 stacking，在此以作记录。 概述Stacking 是一种集合学习技术，通过元分类器组合多个分类模型。基于完整训练集训练各个分类模型; 然后，基于整">
+<meta property="og:image" content="http://img.blog.csdn.net/20170307143221075?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170313215340227?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170307143357210?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170307144231395?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-10-27T13:01:41.266Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="陶景龙的博客 | Mote">
-<meta name="twitter:description" content="记录于此，不忘于心">
+<meta name="twitter:title" content="StackingClassifier">
+<meta name="twitter:description" content="写在前面scikit-learn 官网的Ensemble methods 文档部分只介绍了/bagging / boosting / voting / 三种模型组合方式;但是通过查找学习，受周志华《机器学习》集成学习部分的学习法启发，了解并学习了 stacking，在此以作记录。 概述Stacking 是一种集合学习技术，通过元分类器组合多个分类模型。基于完整训练集训练各个分类模型; 然后，基于整">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170307143221075?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
   
     <link rel="alternate" href="/atom.xml" title="陶景龙的博客 | Mote" type="application/atom+xml">
   
@@ -66,9 +72,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-StackingClassifier" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-StackingClassifier" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/04/04/StackingClassifier/" class="article-date">
   <time datetime="2018-04-04T09:27:41.585Z" itemprop="datePublished">2018-04-04</time>
@@ -81,8 +85,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/04/StackingClassifier/">StackingClassifier</a>
+    <h1 class="article-title" itemprop="name">
+      StackingClassifier
     </h1>
   
 
@@ -252,15 +256,24 @@
     </footer>
   </div>
   
-</article>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/04/BaggingClassifier/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          BaggingClassifier
+        
+      </div>
+    </a>
+  
+  
+</nav>
 
   
+</article>
 
-
-  <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/7/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
-  </nav>
 </section>
         
           <aside id="sidebar">
