@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-OpenCV的等高线画法" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Python数据分析可视化工具" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/04/10/OpenCV的等高线画法/" class="article-date">
-  <time datetime="2018-04-10T07:04:52.439Z" itemprop="datePublished">2018-04-10</time>
+    <a href="/2018/04/10/Python数据分析可视化工具/" class="article-date">
+  <time datetime="2018-04-10T07:14:28.099Z" itemprop="datePublished">2018-04-10</time>
 </a>
     
   </div>
@@ -80,23 +80,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>用于圈出图片上颜色深浅不同的区域</p>
-<p>处理步骤：gray + threshold + open + distanceTransform + medianBlur + find_contours<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io,color</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> cv2</div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> display</div><div class="line"><span class="keyword">from</span> ipywidgets <span class="keyword">import</span> interact,interactive,fixed</div><div class="line">plt.style.use(<span class="string">'classic'</span>)</div></pre></td></tr></table></figure></p>
-<p>1.读取图片，并二值化</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/10532086-ae49b833fec9fe8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="原始图片img"></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/10532086-6d91b841f5427916.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="通道转换后的图片img2"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">img = io.imread(<span class="string">'img.JPG'</span>)</div><div class="line">img2 = io.imread(<span class="string">'img2.JPG'</span>)</div><div class="line"></div><div class="line">gray = cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)</div><div class="line"><span class="comment"># ret 值多凭感觉</span></div><div class="line">thresh = np.ones_like(gray)</div><div class="line">ret = <span class="number">168</span></div><div class="line">thresh[gray &lt; ret] = <span class="number">255</span></div><div class="line">thresh[gray &gt; ret] = <span class="number">0</span></div><div class="line"></div><div class="line">fig = plt.figure(figsize=(<span class="number">16</span>, <span class="number">6</span>))</div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(img)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(gray,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(thresh,<span class="string">'gray'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
-<p><img src="http://upload-images.jianshu.io/upload_images/10532086-eee689c363ba59c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="原图-灰度图-二值化图"></p>
-<p>2.降噪，扩张并获得距离参数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># noise removal</span></div><div class="line">kernel = np.ones((<span class="number">3</span>,<span class="number">3</span>),np.uint8)</div><div class="line">opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = <span class="number">2</span>)</div><div class="line"></div><div class="line"><span class="comment"># sure background area</span></div><div class="line">sure_bg = cv2.dilate(opening,kernel,iterations=<span class="number">3</span>)</div><div class="line"></div><div class="line"><span class="comment"># Finding sure foreground area</span></div><div class="line">dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2,<span class="number">5</span>)</div><div class="line"></div><div class="line"><span class="comment"># distanceTransform</span></div><div class="line">fig = plt.figure(figsize=(<span class="number">16</span>, <span class="number">6</span>))</div><div class="line">plt.subplot(<span class="number">131</span>),plt.imshow(opening,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">132</span>),plt.imshow(sure_bg,<span class="string">'gray'</span>)</div><div class="line">plt.subplot(<span class="number">133</span>),plt.imshow(dist_transform,<span class="string">'gray'</span>)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/10532086-953b60fe33eb0645.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>3.滑动调节等高线高度，绘制等高线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">distance</span><span class="params">(dist_transform,thresh=<span class="number">0.1</span>)</span>:</span></div><div class="line">    ret, sure_fg = cv2.threshold(dist_transform,thresh*dist_transform.max(),<span class="number">255</span>,<span class="number">0</span>)</div><div class="line">    sure_fg = np.uint8(sure_fg)</div><div class="line">    median_img = cv2.medianBlur(sure_fg,<span class="number">17</span>)</div><div class="line">    fig = plt.figure(figsize=(<span class="number">20</span>,<span class="number">18</span>))</div><div class="line">    plt.subplot(<span class="number">121</span>),plt.imshow(median_img,<span class="string">'gray'</span>),plt.xticks([]),plt.yticks([])</div><div class="line">    </div><div class="line">    im2, contours, hierarchy = cv2.findContours(median_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)</div><div class="line">    img_ground = img2.copy()</div><div class="line">    cv2.drawContours(img_ground,contours,<span class="number">-1</span>,(<span class="number">0</span>,<span class="number">255</span>,<span class="number">225</span>),<span class="number">5</span>)</div><div class="line"></div><div class="line">    plt.subplot(<span class="number">122</span>),plt.imshow(img_ground),plt.xticks([]),plt.yticks([])</div><div class="line">    plt.show()</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> median_img,img_ground</div><div class="line"></div><div class="line">lims = (<span class="number">0.0</span>,<span class="number">1.0</span>,<span class="number">0.05</span>)</div><div class="line">w = interactive(distance,dist_transform = fixed(dist_transform),thresh = lims)</div><div class="line">display(w)</div></pre></td></tr></table></figure></p>
-<p>可以拖动进度条调整阈值，以改变等高线位置</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/10532086-f4b06afad459c41f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="效果图"></p>
+        <p>开发环境：Ubuntu16.04+Python2.7+jupyter</p>
+<h2 id="pyecharts"><a href="#pyecharts" class="headerlink" title="pyecharts"></a><a href="https://github.com/chenjiandongx/pyecharts" target="_blank" rel="external">pyecharts</a></h2><p>可交互的饼图工具<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</div><div class="line"><span class="keyword">from</span> pyecharts <span class="keyword">import</span>  Pie</div><div class="line"></div><div class="line">data = pd.DataFrame(datasets.load_iris().target)</div><div class="line">attr = [<span class="string">"0"</span>, <span class="string">"1"</span>,<span class="string">"2"</span>]</div><div class="line">pie = Pie(<span class="string">'type'</span>)</div><div class="line">pie.add(<span class="string">""</span>, attr, [int(i) <span class="keyword">for</span> i <span class="keyword">in</span> data[<span class="number">0</span>].value_counts()] ,is_label_show=<span class="keyword">True</span>)</div><div class="line">pie</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20171207115940880?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>可交互柱状图数据堆叠示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">from pyecharts import Bar, Scatter3D</div><div class="line">from pyecharts import Page</div><div class="line"></div><div class="line">page = Page()  </div><div class="line">attr = [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;]</div><div class="line">v1 = [50, 20, 16, 50, 65, 90]</div><div class="line">v2 = [10, 35, 18, 63, 22, 80]</div><div class="line">bar = Bar(&quot;柱状图数据堆叠示例&quot;)</div><div class="line">bar.add(&quot;A&quot;, attr, v1, is_stack=True)</div><div class="line">bar.add(&quot;B&quot;, attr, v2, is_stack=True)</div><div class="line">page.add(bar)</div><div class="line">page</div></pre></td></tr></table></figure></p>
+<p><img src="//img-blog.csdn.net/2018031916461015?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L2dpdGh1Yl8zNTk2NTM1MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<p>可交互3D散点图示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">import random</div><div class="line">data = [[random.randint(0, 100), random.randint(0, 100), random.randint(0, 100)] for _ in range(80)]</div><div class="line">range_color = [&apos;#313695&apos;, &apos;#4575b4&apos;, &apos;#74add1&apos;, &apos;#abd9e9&apos;, &apos;#e0f3f8&apos;, &apos;#ffffbf&apos;,</div><div class="line">               &apos;#fee090&apos;, &apos;#fdae61&apos;, &apos;#f46d43&apos;, &apos;#d73027&apos;, &apos;#a50026&apos;]</div><div class="line">scatter3D = Scatter3D(&quot;3D 散点图示例&quot;, width=1200, height=600)</div><div class="line">scatter3D.add(&quot;&quot;, data, is_visualmap=True, visual_range_color=range_color)</div><div class="line">page.add(scatter3D) </div><div class="line">page</div></pre></td></tr></table></figure></p>
+<p><img src="//img-blog.csdn.net/20180319164843172?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L2dpdGh1Yl8zNTk2NTM1MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2018/04/10/OpenCV的等高线画法/" data-id="cjftbox9m0001pkf802nszbqq" class="article-share-link">Share</a>
+      <a data-url="http://www.taojinglong.com/2018/04/10/Python数据分析可视化工具/" data-id="cjftbzcal0002jrf8uoyeakcm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -109,7 +104,7 @@
 
 
   <nav id="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
   </nav>
 </section>
         
@@ -140,23 +135,23 @@
       <ul>
         
           <li>
-            <a href="/2018/04/10/OpenCV的等高线画法/">(no title)</a>
+            <a href="/2018/04/10/Python数据分析可视化工具/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/04/04/BaggingClassifier/">BaggingClassifier</a>
+            <a href="/2018/04/10/高斯混合模型_前景分割算法/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/04/04/BoostingClassifier/">(no title)</a>
+            <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/04/04/StackingClassifier/">StackingClassifier</a>
+            <a href="/2018/04/10/人脸关键点提取(dlib)/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/04/04/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
+            <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/">(no title)</a>
           </li>
         
       </ul>

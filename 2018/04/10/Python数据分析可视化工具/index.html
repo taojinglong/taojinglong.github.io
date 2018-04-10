@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>陶景龙的博客 | Mote</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="开发环境：Ubuntu16.04+Python2.7+jupyter pyecharts可交互的饼图工具12345678from sklearn import datasetsfrom pyecharts import  Piedata = pd.DataFrame(datasets.load_iris().target)attr = [&quot;0&quot;, &quot;1&quot;,&quot;2&quot;]pie = Pie(&apos;type&apos;)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="陶景龙的博客 | Mote">
+<meta property="og:url" content="http://www.taojinglong.com/2018/04/10/Python数据分析可视化工具/index.html">
+<meta property="og:site_name" content="陶景龙的博客 | Mote">
+<meta property="og:description" content="开发环境：Ubuntu16.04+Python2.7+jupyter pyecharts可交互的饼图工具12345678from sklearn import datasetsfrom pyecharts import  Piedata = pd.DataFrame(datasets.load_iris().target)attr = [&quot;0&quot;, &quot;1&quot;,&quot;2&quot;]pie = Pie(&apos;type&apos;)">
+<meta property="og:image" content="http://img.blog.csdn.net/20171207115940880?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img-blog.csdn.net/2018031916461015?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L2dpdGh1Yl8zNTk2NTM1MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="http://img-blog.csdn.net/20180319164843172?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L2dpdGh1Yl8zNTk2NTM1MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:updated_time" content="2018-04-10T07:11:32.663Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="陶景龙的博客 | Mote">
+<meta name="twitter:description" content="开发环境：Ubuntu16.04+Python2.7+jupyter pyecharts可交互的饼图工具12345678from sklearn import datasetsfrom pyecharts import  Piedata = pd.DataFrame(datasets.load_iris().target)attr = [&quot;0&quot;, &quot;1&quot;,&quot;2&quot;]pie = Pie(&apos;type&apos;)">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20171207115940880?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+  
+    <link rel="alternate" href="/atom.xml" title="陶景龙的博客 | Mote" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">陶景龙的博客 | Mote</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">桃之夭夭，灼灼其华</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.taojinglong.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Python数据分析可视化工具" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/10/Python数据分析可视化工具/" class="article-date">
+  <time datetime="2018-04-10T07:14:28.099Z" itemprop="datePublished">2018-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>开发环境：Ubuntu16.04+Python2.7+jupyter</p>
+<h2 id="pyecharts"><a href="#pyecharts" class="headerlink" title="pyecharts"></a><a href="https://github.com/chenjiandongx/pyecharts" target="_blank" rel="external">pyecharts</a></h2><p>可交互的饼图工具<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</div><div class="line"><span class="keyword">from</span> pyecharts <span class="keyword">import</span>  Pie</div><div class="line"></div><div class="line">data = pd.DataFrame(datasets.load_iris().target)</div><div class="line">attr = [<span class="string">"0"</span>, <span class="string">"1"</span>,<span class="string">"2"</span>]</div><div class="line">pie = Pie(<span class="string">'type'</span>)</div><div class="line">pie.add(<span class="string">""</span>, attr, [int(i) <span class="keyword">for</span> i <span class="keyword">in</span> data[<span class="number">0</span>].value_counts()] ,is_label_show=<span class="keyword">True</span>)</div><div class="line">pie</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20171207115940880?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>可交互柱状图数据堆叠示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">from pyecharts import Bar, Scatter3D</div><div class="line">from pyecharts import Page</div><div class="line"></div><div class="line">page = Page()  </div><div class="line">attr = [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;]</div><div class="line">v1 = [50, 20, 16, 50, 65, 90]</div><div class="line">v2 = [10, 35, 18, 63, 22, 80]</div><div class="line">bar = Bar(&quot;柱状图数据堆叠示例&quot;)</div><div class="line">bar.add(&quot;A&quot;, attr, v1, is_stack=True)</div><div class="line">bar.add(&quot;B&quot;, attr, v2, is_stack=True)</div><div class="line">page.add(bar)</div><div class="line">page</div></pre></td></tr></table></figure></p>
+<p><img src="//img-blog.csdn.net/2018031916461015?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L2dpdGh1Yl8zNTk2NTM1MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<p>可交互3D散点图示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">import random</div><div class="line">data = [[random.randint(0, 100), random.randint(0, 100), random.randint(0, 100)] for _ in range(80)]</div><div class="line">range_color = [&apos;#313695&apos;, &apos;#4575b4&apos;, &apos;#74add1&apos;, &apos;#abd9e9&apos;, &apos;#e0f3f8&apos;, &apos;#ffffbf&apos;,</div><div class="line">               &apos;#fee090&apos;, &apos;#fdae61&apos;, &apos;#f46d43&apos;, &apos;#d73027&apos;, &apos;#a50026&apos;]</div><div class="line">scatter3D = Scatter3D(&quot;3D 散点图示例&quot;, width=1200, height=600)</div><div class="line">scatter3D.add(&quot;&quot;, data, is_visualmap=True, visual_range_color=range_color)</div><div class="line">page.add(scatter3D) </div><div class="line">page</div></pre></td></tr></table></figure></p>
+<p><img src="//img-blog.csdn.net/20180319164843172?watermark/2/text/Ly9ibG9nLmNzZG4ubmV0L2dpdGh1Yl8zNTk2NTM1MQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.taojinglong.com/2018/04/10/Python数据分析可视化工具/" data-id="cjftbzcal0002jrf8uoyeakcm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/10/高斯混合模型_前景分割算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/10/Python数据分析可视化工具/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/高斯混合模型_前景分割算法/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/人脸关键点提取(dlib)/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 mote<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
