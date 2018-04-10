@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   
-  <title>陶景龙的博客 | Mote</title>
+  <title>BoostingClassifier | 陶景龙的博客 | Mote</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="title写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboos">
+  <meta name="description" content="写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboost 算法：W">
 <meta property="og:type" content="article">
-<meta property="og:title" content="陶景龙的博客 | Mote">
-<meta property="og:url" content="http://www.taojinglong.com/2018/04/04/BoostingClassifier/index.html">
+<meta property="og:title" content="BoostingClassifier">
+<meta property="og:url" content="http://www.taojinglong.com/2018/04/10/BoostingClassifier/index.html">
 <meta property="og:site_name" content="陶景龙的博客 | Mote">
-<meta property="og:description" content="title写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboos">
+<meta property="og:description" content="写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboost 算法：W">
 <meta property="og:image" content="http://img.blog.csdn.net/20170313164310516?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170313164649614?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170313164811460?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
@@ -18,10 +18,10 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20170313171052678?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170313174847793?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170313181806672?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-10-27T12:57:58.203Z">
+<meta property="og:updated_time" content="2018-04-10T07:23:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="陶景龙的博客 | Mote">
-<meta name="twitter:description" content="title写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboos">
+<meta name="twitter:title" content="BoostingClassifier">
+<meta name="twitter:description" content="写在前面前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式. 算法主要特点Boosting:  顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型 旨在减少偏差，而不是方差 适合低方差高偏差模型 基于树的方法的示例是梯度提升  图例描述  接下来进入主题1. Adaboost 算法：W">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20170313164310516?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
   
     <link rel="alternate" href="/atom.xml" title="陶景龙的博客 | Mote" type="application/atom+xml">
@@ -77,18 +77,27 @@
       <div class="outer">
         <section id="main"><article id="post-BoostingClassifier" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/04/04/BoostingClassifier/" class="article-date">
-  <time datetime="2018-04-04T09:37:43.320Z" itemprop="datePublished">2018-04-04</time>
+    <a href="/2018/04/10/BoostingClassifier/" class="article-date">
+  <time datetime="2018-04-10T07:23:59.877Z" itemprop="datePublished">2018-04-10</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      BoostingClassifier
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <hr>
-<h2 id="title"><a href="#title" class="headerlink" title="title"></a>title</h2><h4 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h4><p>前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式.</p>
+        <h4 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h4><p>前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式.</p>
 <h2 id="算法主要特点"><a href="#算法主要特点" class="headerlink" title="算法主要特点"></a>算法主要特点</h2><p><strong>Boosting:</strong></p>
 <ul>
 <li>顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型</li>
@@ -187,7 +196,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2018/04/04/BoostingClassifier/" data-id="cjftbzcac0000jrf8f9mmirzc" class="article-share-link">Share</a>
+      <a data-url="http://www.taojinglong.com/2018/04/10/BoostingClassifier/" data-id="cjftcc56a0001nrf8qcfqqqw8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -196,19 +205,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/04/10/OpenCV的等高线画法/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/04/10/高斯混合模型_前景分割算法/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          (no title)
+          高斯混合模型/前景分割算法
         
       </div>
     </a>
   
   
-    <a href="/2018/04/04/BaggingClassifier/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/04/10/人脸关键点提取(dlib)/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">BaggingClassifier</div>
+      <div class="article-nav-title">人脸关键点提取(dlib)</div>
     </a>
   
 </nav>
@@ -245,23 +254,23 @@
       <ul>
         
           <li>
-            <a href="/2018/04/10/Python数据分析可视化工具/">(no title)</a>
+            <a href="/2018/04/10/高斯混合模型_前景分割算法/">高斯混合模型/前景分割算法</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/高斯混合模型_前景分割算法/">(no title)</a>
+            <a href="/2018/04/10/BoostingClassifier/">BoostingClassifier</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/">(no title)</a>
+            <a href="/2018/04/10/人脸关键点提取(dlib)/">人脸关键点提取(dlib)</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/人脸关键点提取(dlib)/">(no title)</a>
+            <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/">Ubuntu下安装部分常用软件历程</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/">(no title)</a>
+            <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/">Ubuntu下安装Oracle sqldeveloper记录</a>
           </li>
         
       </ul>

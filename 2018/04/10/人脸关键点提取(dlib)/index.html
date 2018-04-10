@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>陶景龙的博客 | Mote</title>
+  <title>人脸关键点提取(dlib) | 陶景龙的博客 | Mote</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="#人脸关键点提取(dlib)作者使用开发环境Ubuntu17.04+Python2.7 1.安装重要依赖库1.1. 安装dlib方法一：Python package index规规矩矩按照Python package index 中描述步骤安装咳咳，这个方法按说是最‘正规’的，但是我就是没成功…….有兴趣的同学可以尝试一下链接内的安装步骤。 方法二：Anaconda安装使用 anaconda 包管">
+  <meta name="description" content="作者使用开发环境Ubuntu17.04+Python2.7 1.安装重要依赖库1.1. 安装dlib方法一：Python package index规规矩矩按照Python package index 中描述步骤安装咳咳，这个方法按说是最‘正规’的，但是我就是没成功…….有兴趣的同学可以尝试一下链接内的安装步骤。 方法二：Anaconda安装使用 anaconda 包管理工具 conda(类似pi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="陶景龙的博客 | Mote">
+<meta property="og:title" content="人脸关键点提取(dlib)">
 <meta property="og:url" content="http://www.taojinglong.com/2018/04/10/人脸关键点提取(dlib)/index.html">
 <meta property="og:site_name" content="陶景龙的博客 | Mote">
-<meta property="og:description" content="#人脸关键点提取(dlib)作者使用开发环境Ubuntu17.04+Python2.7 1.安装重要依赖库1.1. 安装dlib方法一：Python package index规规矩矩按照Python package index 中描述步骤安装咳咳，这个方法按说是最‘正规’的，但是我就是没成功…….有兴趣的同学可以尝试一下链接内的安装步骤。 方法二：Anaconda安装使用 anaconda 包管">
-<meta property="og:updated_time" content="2018-04-10T07:13:19.953Z">
+<meta property="og:description" content="作者使用开发环境Ubuntu17.04+Python2.7 1.安装重要依赖库1.1. 安装dlib方法一：Python package index规规矩矩按照Python package index 中描述步骤安装咳咳，这个方法按说是最‘正规’的，但是我就是没成功…….有兴趣的同学可以尝试一下链接内的安装步骤。 方法二：Anaconda安装使用 anaconda 包管理工具 conda(类似pi">
+<meta property="og:updated_time" content="2018-04-10T07:22:50.329Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="陶景龙的博客 | Mote">
-<meta name="twitter:description" content="#人脸关键点提取(dlib)作者使用开发环境Ubuntu17.04+Python2.7 1.安装重要依赖库1.1. 安装dlib方法一：Python package index规规矩矩按照Python package index 中描述步骤安装咳咳，这个方法按说是最‘正规’的，但是我就是没成功…….有兴趣的同学可以尝试一下链接内的安装步骤。 方法二：Anaconda安装使用 anaconda 包管">
+<meta name="twitter:title" content="人脸关键点提取(dlib)">
+<meta name="twitter:description" content="作者使用开发环境Ubuntu17.04+Python2.7 1.安装重要依赖库1.1. 安装dlib方法一：Python package index规规矩矩按照Python package index 中描述步骤安装咳咳，这个方法按说是最‘正规’的，但是我就是没成功…….有兴趣的同学可以尝试一下链接内的安装步骤。 方法二：Anaconda安装使用 anaconda 包管理工具 conda(类似pi">
   
     <link rel="alternate" href="/atom.xml" title="陶景龙的博客 | Mote" type="application/atom+xml">
   
@@ -70,16 +70,26 @@
         <section id="main"><article id="post-人脸关键点提取(dlib)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/04/10/人脸关键点提取(dlib)/" class="article-date">
-  <time datetime="2018-04-10T07:14:28.095Z" itemprop="datePublished">2018-04-10</time>
+  <time datetime="2018-04-10T07:22:50.329Z" itemprop="datePublished">2018-04-10</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      人脸关键点提取(dlib)
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#人脸关键点提取(dlib)<br>作者使用开发环境Ubuntu17.04+Python2.7</p>
+        <p>作者使用开发环境Ubuntu17.04+Python2.7</p>
 <h1 id="1-安装重要依赖库"><a href="#1-安装重要依赖库" class="headerlink" title="1.安装重要依赖库"></a>1.安装重要依赖库</h1><h2 id="1-1-安装dlib"><a href="#1-1-安装dlib" class="headerlink" title="1.1. 安装dlib"></a>1.1. 安装dlib</h2><h3 id="方法一：Python-package-index"><a href="#方法一：Python-package-index" class="headerlink" title="方法一：Python package index"></a>方法一：Python package index</h3><p>规规矩矩按照<a href="https://pypi.python.org/pypi/dlib" target="_blank" rel="external">Python package index</a> 中描述步骤安装<br>咳咳，这个方法按说是最‘正规’的，但是我就是没成功…….<br>有兴趣的同学可以尝试一下链接内的安装步骤。</p>
 <h3 id="方法二：Anaconda安装"><a href="#方法二：Anaconda安装" class="headerlink" title="方法二：Anaconda安装"></a>方法二：Anaconda安装</h3><p>使用 anaconda 包管理工具 conda(类似pip)<br>一行搞定 <figure class="highlight plain"><figcaption><span>install dlib</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">但是存在一个问题是：我使用virtualenv建立了虚拟环境，其中并未安装Anaconda，所以dlib安装在系统的Anaconda内，虚拟环境内并未安装，等时间充裕会尝试一下</div><div class="line"></div><div class="line">## 1.2.安装opencv</div><div class="line"></div><div class="line">具体可参考作者的另一篇博客《深度学习图像处理Ubuntu环境搭建》</div><div class="line"></div><div class="line"># 2.应用阶段</div><div class="line"></div><div class="line">## 2.1.人脸关键点提取</div><div class="line"></div><div class="line">关键点提取需要一个特征提取器(predictor)，构建特征提取器可以训练模型。当然我们也可以使用官方提供的一个模型‘shape_predictor_68_face_landmarks.dat’，可以去官网也可以在我的网盘里下载: https://pan.baidu.com/s/1dF7z26H 密码: 54i9</div><div class="line"></div><div class="line">如下提供一张dlib提取到的关键点参考图</div><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171012175144111?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">下面可以看一张效果图，作者进行了灰度转换</div><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171114140147722?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">下面代码部分实现</div><div class="line">```Python</div><div class="line"># -*- coding:utf-8 -*- </div><div class="line"></div><div class="line">import cv2</div><div class="line">import dlib</div><div class="line">import numpy as np </div><div class="line">    </div><div class="line">cap = cv2.VideoCapture(0)</div><div class="line">cap.isOpened()</div><div class="line"></div><div class="line">def ket_points(img):</div><div class="line">    # 人脸关键点检测</div><div class="line">    PREDICTOR_PATH = &quot;../some-big-model-file/shape_predictor_68_face_landmarks.dat&quot;</div><div class="line">    </div><div class="line">    detector = dlib.get_frontal_face_detector()</div><div class="line">    predictor = dlib.shape_predictor(PREDICTOR_PATH)</div><div class="line">    rects = detector(img,1)</div><div class="line">    points_keys = []</div><div class="line"></div><div class="line">    for i in range(len(rects)):</div><div class="line">        landmarks = np.matrix([[p.x,p.y] for p in predictor(img,rects[i]).parts()])</div><div class="line">        img = img.copy()</div><div class="line">        for idx,point in enumerate(landmarks):</div><div class="line">            pos = (point[0,0],point[0,1])</div><div class="line">            points_keys.append(pos)</div><div class="line">            cv2.circle(img,pos,2,(255,0,0),-1)</div><div class="line">    return img</div><div class="line"></div><div class="line">while(True):</div><div class="line">    ret, frame = cap.read()</div><div class="line">    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</div><div class="line">    face_key = ket_points(gray)</div><div class="line">    cv2.imshow(&apos;frame&apos;,face_key)</div><div class="line">    if cv2.waitKey(1) &amp; 0xFF == ord(&apos;q&apos;):</div><div class="line">        break</div><div class="line"></div><div class="line">cap.release()</div><div class="line">cv2.destroyAllWindows()</div></pre></td></tr></table></figure></p>
 <p>待续。。。</p>
@@ -87,7 +97,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2018/04/10/人脸关键点提取(dlib)/" data-id="cjftbzcat0007jrf8bivfv1zv" class="article-share-link">Share</a>
+      <a data-url="http://www.taojinglong.com/2018/04/10/人脸关键点提取(dlib)/" data-id="cjftcc56n0007nrf8wsfnadxy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -96,19 +106,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/04/10/BoostingClassifier/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          (no title)
+          BoostingClassifier
         
       </div>
     </a>
   
   
-    <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title"></div>
+      <div class="article-nav-title">Ubuntu下安装部分常用软件历程</div>
     </a>
   
 </nav>
@@ -145,23 +155,23 @@
       <ul>
         
           <li>
-            <a href="/2018/04/10/Python数据分析可视化工具/">(no title)</a>
+            <a href="/2018/04/10/高斯混合模型_前景分割算法/">高斯混合模型/前景分割算法</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/高斯混合模型_前景分割算法/">(no title)</a>
+            <a href="/2018/04/10/BoostingClassifier/">BoostingClassifier</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/">(no title)</a>
+            <a href="/2018/04/10/人脸关键点提取(dlib)/">人脸关键点提取(dlib)</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/人脸关键点提取(dlib)/">(no title)</a>
+            <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/">Ubuntu下安装部分常用软件历程</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/">(no title)</a>
+            <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/">Ubuntu下安装Oracle sqldeveloper记录</a>
           </li>
         
       </ul>

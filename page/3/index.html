@@ -68,40 +68,37 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Ubuntu下安装部分常用软件历程" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-人脸关键点提取(dlib)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/" class="article-date">
-  <time datetime="2018-04-10T07:14:28.095Z" itemprop="datePublished">2018-04-10</time>
+    <a href="/2018/04/10/人脸关键点提取(dlib)/" class="article-date">
+  <time datetime="2018-04-10T07:22:50.329Z" itemprop="datePublished">2018-04-10</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/10/人脸关键点提取(dlib)/">人脸关键点提取(dlib)</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>不喜欢用虚拟机，也不习惯在win下开发，但是也不能放弃win，那好吧，干脆装个双系统吧ubuntu16.04 + win10</p>
-<p>Ubuntu开发虽好，但是使用起来如何更加顺手，还得自己配置一番。</p>
-<h1 id="1-系统安装篇"><a href="#1-系统安装篇" class="headerlink" title="1.系统安装篇"></a>1.系统安装篇</h1><figure class="highlight vim"><figcaption><span>/etc/apt/source.list```建议改为科大源，速度还是相当可以的</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">其他略...</div><div class="line"># <span class="number">2</span>.软件安装篇</div><div class="line"></div><div class="line">### QQ安装</div><div class="line">习惯使用QQ的人才会想在Linux下安装QQ（<span class="number">80</span>/<span class="number">90</span>后），安装起来也不是一般的遭罪...</div><div class="line">首先说明的是Ubuntu下装的QQ与win下的相比真的很差劲，准备下手的同学们请做好心理准备。</div><div class="line"></div><div class="line">- <span class="number">1</span>.下载wineQQ国际版，优麒麟提供[下载](http://www.ubuntukylin.<span class="keyword">com</span>/application/show.php?lang=<span class="keyword">cn</span>&amp;id=<span class="number">279</span>)</div><div class="line">- <span class="number">2</span>.下载ibpng12-<span class="number">0</span>_1.<span class="number">2.54</span>-<span class="number">1</span>ubuntu1_i386.<span class="keyword">deb</span> 链接: http<span class="variable">s:</span>//pan.baidu.<span class="keyword">com</span>/s/<span class="number">1</span>cllr10 密码: <span class="number">3</span>xqu（这一步是因为ubuntu16.<span class="number">10</span>之后源里面不再有libpng12这个包了，会包依赖错误，需要我们手动安装）</div><div class="line">- <span class="number">3</span>.终端输入```sudo dpkg --<span class="built_in">add</span>-architecture i386</div></pre></td></tr></table></figure>
-<ul>
-<li><p>4.打开下载目录，终端输入<figure class="highlight plain"><figcaption><span>dpkg -i libpng12-0_1.2.54-1ubuntu1_i386.deb ```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 5.解压wineQQ压缩包，进入该目录后终端输入```sudo dpkg -i fonts-wqy-microhei_0.2.0-beta-2_all.deb ttf-wqy-microhei_0.2.0-beta-2_all.deb wine-qqintl_0.1.3-2_i386.deb</div></pre></td></tr></table></figure></p>
-</li>
-<li><p>6.如果报依赖错误，输入：sudo apt-get install -f</p>
-</li>
-<li>7.解决依赖后再执行步骤5</li>
-</ul>
-<p>如下图<br><img src="http://img.blog.csdn.net/20171020124854643?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p><img src="http://img.blog.csdn.net/20171020125253514?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>这个版本qq登录时会报 “…..暂时不能使用低版本的QQ…..” ，这是由于被安全机制检测到版本太低，需要手机登录qq将手机设备锁关掉才行。其他问题尚无。</p>
-<h3 id="WeChat安装"><a href="#WeChat安装" class="headerlink" title="WeChat安装"></a>WeChat安装</h3><p>作为统一老中幼三代，纵横生活、工作、学习各大圈子的通讯软件，那么存在于Ubuntu上也就不那么奇怪了，本文介绍的是第三方微信客户端electronic-wechat，开源地址为<a href="https://github.com/geeeeeeeeek/electronic-wechat，git下载太慢，所以贴上我的云盘分享链接" target="_blank" rel="external">https://github.com/geeeeeeeeek/electronic-wechat，git下载太慢，所以贴上我的云盘分享链接</a>: <a href="https://pan.baidu.com/s/1pLsTGLX" target="_blank" rel="external">https://pan.baidu.com/s/1pLsTGLX</a> 密码: deu4</p>
-<p>安装方法巨简单，下载完成后，打开文件，选择32位或者64位，直接<figure class="highlight plain"><figcaption><span>dpkg -i eletronic-wechat_2.0_amd64.deb```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">安装完成，dash搜索wechat即可。贴上截图效果。</div><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171114115027889?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">### 搜狗输入法安装</div><div class="line">同样的贴上我的百度云盘链接: https://pan.baidu.com/s/1mkiRyuk 密码: 8igh</div><div class="line">安装方法巨简单，下载完成后，直接```sudo dpkg -i sogoupinyin_2.1.0.0086_amd64.deb</div></pre></td></tr></table></figure></p>
-<p>安装完成，效果如下，系统输入法已经添加搜狗输入发，切换即可使用<br><img src="http://upload-images.jianshu.io/upload_images/10532086-b3eb5df954c9af4f?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="这里写图片描述"></p>
-<h3 id="网易云音乐安装"><a href="#网易云音乐安装" class="headerlink" title="网易云音乐安装"></a>网易云音乐安装</h3><p>网易云音乐还算比较良心，竟然出了linux版本，具体使用的话，与win下版本基本无差别，云盘地址链接: <a href="https://pan.baidu.com/s/1i65HRKD" target="_blank" rel="external">https://pan.baidu.com/s/1i65HRKD</a> 密码: sqbu<br>安装方法同上。效果如下图<br><img src="http://upload-images.jianshu.io/upload_images/10532086-8e09d9acfb92786f?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="这里写图片描述"><br>待续。。。。。。</p>
+        <p>作者使用开发环境Ubuntu17.04+Python2.7</p>
+<h1 id="1-安装重要依赖库"><a href="#1-安装重要依赖库" class="headerlink" title="1.安装重要依赖库"></a>1.安装重要依赖库</h1><h2 id="1-1-安装dlib"><a href="#1-1-安装dlib" class="headerlink" title="1.1. 安装dlib"></a>1.1. 安装dlib</h2><h3 id="方法一：Python-package-index"><a href="#方法一：Python-package-index" class="headerlink" title="方法一：Python package index"></a>方法一：Python package index</h3><p>规规矩矩按照<a href="https://pypi.python.org/pypi/dlib" target="_blank" rel="external">Python package index</a> 中描述步骤安装<br>咳咳，这个方法按说是最‘正规’的，但是我就是没成功…….<br>有兴趣的同学可以尝试一下链接内的安装步骤。</p>
+<h3 id="方法二：Anaconda安装"><a href="#方法二：Anaconda安装" class="headerlink" title="方法二：Anaconda安装"></a>方法二：Anaconda安装</h3><p>使用 anaconda 包管理工具 conda(类似pip)<br>一行搞定 <figure class="highlight plain"><figcaption><span>install dlib</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">但是存在一个问题是：我使用virtualenv建立了虚拟环境，其中并未安装Anaconda，所以dlib安装在系统的Anaconda内，虚拟环境内并未安装，等时间充裕会尝试一下</div><div class="line"></div><div class="line">## 1.2.安装opencv</div><div class="line"></div><div class="line">具体可参考作者的另一篇博客《深度学习图像处理Ubuntu环境搭建》</div><div class="line"></div><div class="line"># 2.应用阶段</div><div class="line"></div><div class="line">## 2.1.人脸关键点提取</div><div class="line"></div><div class="line">关键点提取需要一个特征提取器(predictor)，构建特征提取器可以训练模型。当然我们也可以使用官方提供的一个模型‘shape_predictor_68_face_landmarks.dat’，可以去官网也可以在我的网盘里下载: https://pan.baidu.com/s/1dF7z26H 密码: 54i9</div><div class="line"></div><div class="line">如下提供一张dlib提取到的关键点参考图</div><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171012175144111?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">下面可以看一张效果图，作者进行了灰度转换</div><div class="line">![这里写图片描述](http://img.blog.csdn.net/20171114140147722?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</div><div class="line"></div><div class="line">下面代码部分实现</div><div class="line">```Python</div><div class="line"># -*- coding:utf-8 -*- </div><div class="line"></div><div class="line">import cv2</div><div class="line">import dlib</div><div class="line">import numpy as np </div><div class="line">    </div><div class="line">cap = cv2.VideoCapture(0)</div><div class="line">cap.isOpened()</div><div class="line"></div><div class="line">def ket_points(img):</div><div class="line">    # 人脸关键点检测</div><div class="line">    PREDICTOR_PATH = &quot;../some-big-model-file/shape_predictor_68_face_landmarks.dat&quot;</div><div class="line">    </div><div class="line">    detector = dlib.get_frontal_face_detector()</div><div class="line">    predictor = dlib.shape_predictor(PREDICTOR_PATH)</div><div class="line">    rects = detector(img,1)</div><div class="line">    points_keys = []</div><div class="line"></div><div class="line">    for i in range(len(rects)):</div><div class="line">        landmarks = np.matrix([[p.x,p.y] for p in predictor(img,rects[i]).parts()])</div><div class="line">        img = img.copy()</div><div class="line">        for idx,point in enumerate(landmarks):</div><div class="line">            pos = (point[0,0],point[0,1])</div><div class="line">            points_keys.append(pos)</div><div class="line">            cv2.circle(img,pos,2,(255,0,0),-1)</div><div class="line">    return img</div><div class="line"></div><div class="line">while(True):</div><div class="line">    ret, frame = cap.read()</div><div class="line">    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)</div><div class="line">    face_key = ket_points(gray)</div><div class="line">    cv2.imshow(&apos;frame&apos;,face_key)</div><div class="line">    if cv2.waitKey(1) &amp; 0xFF == ord(&apos;q&apos;):</div><div class="line">        break</div><div class="line"></div><div class="line">cap.release()</div><div class="line">cv2.destroyAllWindows()</div></pre></td></tr></table></figure></p>
+<p>待续。。。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2018/04/10/Ubuntu下安装部分常用软件历程/" data-id="cjftbzcas0006jrf8ld3cqsn7" class="article-share-link">Share</a>
+      <a data-url="http://www.taojinglong.com/2018/04/10/人脸关键点提取(dlib)/" data-id="cjftcc56n0007nrf8wsfnadxy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -145,23 +142,23 @@
       <ul>
         
           <li>
-            <a href="/2018/04/10/Python数据分析可视化工具/">(no title)</a>
+            <a href="/2018/04/10/高斯混合模型_前景分割算法/">高斯混合模型/前景分割算法</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/高斯混合模型_前景分割算法/">(no title)</a>
+            <a href="/2018/04/10/BoostingClassifier/">BoostingClassifier</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/">(no title)</a>
+            <a href="/2018/04/10/人脸关键点提取(dlib)/">人脸关键点提取(dlib)</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/人脸关键点提取(dlib)/">(no title)</a>
+            <a href="/2018/04/10/Ubuntu下安装部分常用软件历程/">Ubuntu下安装部分常用软件历程</a>
           </li>
         
           <li>
-            <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/">(no title)</a>
+            <a href="/2018/04/10/Ubuntu下安装Oracle sqldeveloper记录/">Ubuntu下安装Oracle sqldeveloper记录</a>
           </li>
         
       </ul>
