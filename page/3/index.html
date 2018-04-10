@@ -68,9 +68,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-StackingClassifier" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-BoostingClassifier" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/04/04/StackingClassifier/" class="article-date">
+    <a href="/2018/04/04/BoostingClassifier/" class="article-date">
   <time datetime="2018-04-04T09:37:43.320Z" itemprop="datePublished">2018-04-04</time>
 </a>
     
@@ -78,175 +78,109 @@
   <div class="article-inner">
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/04/StackingClassifier/">StackingClassifier</a>
-    </h1>
-  
-
-      </header>
-    
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>scikit-learn 官网的Ensemble methods 文档部分只介绍了/bagging / boosting / voting / 三种模型组合方式;但是通过查找学习，受周志华《机器学习》集成学习部分的学习法启发，了解并学习了 stacking，在此以作记录。</p>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Stacking 是一种集合学习技术，通过元分类器组合多个分类模型。基于完整训练集训练各个分类模型; 然后，基于整体中的各个分类模型的输出 - 元特征来拟合元分类器。元分类器可以根据预测类标签或来自集合的概率进行训练。</p>
-<p><strong>流程图：</strong><br><img src="http://img.blog.csdn.net/20170307143221075?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="流程图"><br>OR<br><img src="http://img.blog.csdn.net/20170313215340227?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p><strong>算法总结：</strong><br><img src="http://img.blog.csdn.net/20170307143357210?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+        <hr>
+<h2 id="title"><a href="#title" class="headerlink" title="title"></a>title</h2><h4 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h4><p>前面博客写过 bagging 算法的实现方式，并且提到集成算法的其他三类模型组合方式，此文主要简述Boosting 中Adaboost / GBDT 的实现方式.</p>
+<h2 id="算法主要特点"><a href="#算法主要特点" class="headerlink" title="算法主要特点"></a>算法主要特点</h2><p><strong>Boosting:</strong></p>
+<ul>
+<li>顺序集合：尝试添加在之前模型缺失的地方做得很好的新模型</li>
+<li>旨在减少偏差，而不是方差</li>
+<li>适合低方差高偏差模型</li>
+<li>基于树的方法的示例是梯度提升</li>
+</ul>
+<p><strong>图例描述</strong><br><img src="http://img.blog.csdn.net/20170313164310516?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 <hr>
-<h1 id="下面直接上实现过程"><a href="#下面直接上实现过程" class="headerlink" title="下面直接上实现过程"></a>下面直接上实现过程</h1><p>环境</p>
-<ul>
-<li>ubantu 16.04 + jupyter + python2.7</li>
-<li>scikit-learn +  mlxtend + anconda </li>
-</ul>
-<h2 id="示例1-基础StackingClassifier"><a href="#示例1-基础StackingClassifier" class="headerlink" title="示例1.基础StackingClassifier"></a>示例1.基础StackingClassifier</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">from sklearn import model_selection</div><div class="line">from sklearn.linear_model import LogisticRegression</div><div class="line">from sklearn.neighbors import KNeighborsClassifier</div><div class="line">from sklearn.naive_bayes import GaussianNB </div><div class="line">from sklearn.ensemble import RandomForestClassifier</div><div class="line">from mlxtend.classifier import StackingClassifier</div><div class="line">import numpy as np</div><div class="line"></div><div class="line">clf1 = KNeighborsClassifier(n_neighbors=1)</div><div class="line">clf2 = RandomForestClassifier(random_state=1)</div><div class="line">clf3 = GaussianNB()</div><div class="line">lr = LogisticRegression()</div><div class="line">sclf = StackingClassifier(classifiers=[clf1, clf2, clf3], </div><div class="line">                          meta_classifier=lr)</div><div class="line"></div><div class="line">print(&apos;3-fold cross validation:\n&apos;)</div><div class="line"></div><div class="line">for clf, label in zip([clf1, clf2, clf3, sclf], </div><div class="line">                      [&apos;KNN&apos;, </div><div class="line">                       &apos;Random Forest&apos;, </div><div class="line">                       &apos;Naive Bayes&apos;,</div><div class="line">                       &apos;StackingClassifier&apos;]):</div><div class="line"></div><div class="line">    scores = model_selection.cross_val_score(clf, X, y, </div><div class="line">                                              cv=3, scoring=&apos;accuracy&apos;)</div><div class="line">    print(&quot;Accuracy: %0.2f (+/- %0.2f) [%s]&quot; </div><div class="line">          % (scores.mean(), scores.std(), label))</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">3-fold cross validation:</div><div class="line"></div><div class="line">Accuracy: 0.91 (+/- 0.01) [KNN]</div><div class="line">Accuracy: 0.91 (+/- 0.06) [Random Forest]</div><div class="line">Accuracy: 0.92 (+/- 0.03) [Naive Bayes]</div><div class="line">Accuracy: 0.95 (+/- 0.03) [StackingClassifier]</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">import matplotlib.pyplot as plt</div><div class="line">from mlxtend.plotting import plot_decision_regions</div><div class="line">import matplotlib.gridspec as gridspec</div><div class="line">import itertools</div><div class="line"></div><div class="line">gs = gridspec.GridSpec(2, 2)</div><div class="line"></div><div class="line">fig = plt.figure(figsize=(10,8))</div><div class="line"></div><div class="line">for clf, lab, grd in zip([clf1, clf2, clf3, sclf], </div><div class="line">                         [&apos;KNN&apos;, </div><div class="line">                          &apos;Random Forest&apos;, </div><div class="line">                          &apos;Naive Bayes&apos;,</div><div class="line">                          &apos;StackingClassifier&apos;],</div><div class="line">                          itertools.product([0, 1], repeat=2)):</div><div class="line"></div><div class="line">    clf.fit(X, y)</div><div class="line">    ax = plt.subplot(gs[grd[0], grd[1]])</div><div class="line">    fig = plot_decision_regions(X=X, y=y, clf=clf)</div><div class="line">    plt.title(lab)</div></pre></td></tr></table></figure>
-<p><img src="http://img.blog.csdn.net/20170307144231395?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<h3 id="接下来进入主题"><a href="#接下来进入主题" class="headerlink" title="接下来进入主题"></a>接下来进入主题</h3><h1 id="1-Adaboost-算法："><a href="#1-Adaboost-算法：" class="headerlink" title="1. Adaboost 算法："></a>1. Adaboost 算法：</h1><p><strong>WIKI百科：</strong><br>AdaBoost，即Adaptive Boosting，译为自适应增强，其1995年由Freund和Schapire提出的。AdaBoost算法是提升方法（Boosting）的一种，那什么是提升方法呢？提升方法是一种将弱学习算法提升为强学习算法的一种统计学习方法，在分类问题中，它通过反复修改训练样本的权值分布，构建一系列基本分类器（弱分类器），并将这些基本分类器线性组合起来，构建一个强分类器，以提高分类性能。而AdaBoost算法便是提升方法中的代表性算法，另外一个是提升树方法（Boosting Tree）。</p>
+<p><strong>通俗理解：</strong><br>即Adaptive boosting，是一种迭代算法。每轮迭代中会在训练集上产生一个新的分类器，然后使用该分类器对所有样本进行分类，以评估每个样本的重要性（informative）。 具体来说，算法会为每个训练样本赋予一个权值。每次用训练完的新分类器标注各个样本，若某个样本点已被分类正确，则将其权值降低；若样本点未被正确分类，则提高其权值。权值越高的样本在下一次训练中所占的比重越大，也就是说越难区分的样本在训练过程中会变得越来越重要。 整个迭代过程直到错误率足够小或达到一定次数为止。</p>
 <hr>
-<h2 id="示例2-使用概率作为原特征的分类"><a href="#示例2-使用概率作为原特征的分类" class="headerlink" title="示例2.使用概率作为原特征的分类"></a>示例2.使用概率作为原特征的分类</h2><p>或者，第一级分类器的类概率可用于通过设置来训练元分类器（第二级分类器）use_probas=True。如果average_probas=True，平均1级分类器的概率，如果average_probas=False，概率被学习法（推荐）。例如，在具有2个1级分类器的3类设置中，这些分类器可以对1个训练样本进行以下“概率”预测：</p>
-<ul>
-<li>分类器1：[0.2,0.5,0.3]</li>
-<li>分类器2：[0.3,0.4,0.4]</li>
+<h2 id="1-1-实现原理："><a href="#1-1-实现原理：" class="headerlink" title="1.1 实现原理："></a>1.1 实现原理：</h2><ul>
+<li><p>数学基础<br><img src="http://img.blog.csdn.net/20170313164649614?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+</li>
+<li><p>图例描述<br><img src="http://img.blog.csdn.net/20170313164811460?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+</li>
+<li><p>实现描述</p>
+</li>
 </ul>
-<p>如果average_probas=True，元特征将是：</p>
-<ul>
-<li>[0.25,0.45,0.35]</li>
-</ul>
-<p>相反，使用average_probas=Falsek个特征中的结果，其中，k = [n_classes * n_classifiers]，通过学习法这些1级概率：</p>
-<ul>
-<li>[0.2,0.5,0.3,0.3,0.4,0.4]</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">clf1 = KNeighborsClassifier(n_neighbors=1)</div><div class="line">clf2 = RandomForestClassifier(random_state=1)</div><div class="line">clf3 = GaussianNB()</div><div class="line">lr = LogisticRegression()</div><div class="line">sclf = StackingClassifier(classifiers=[clf1, clf2, clf3],</div><div class="line">                          use_probas=True,</div><div class="line">                          average_probas=False,</div><div class="line">                          meta_classifier=lr)</div><div class="line"></div><div class="line">print(&apos;3-fold cross validation:\n&apos;)</div><div class="line"></div><div class="line">for clf, label in zip([clf1, clf2, clf3, sclf], </div><div class="line">                      [&apos;KNN&apos;, </div><div class="line">                       &apos;Random Forest&apos;, </div><div class="line">                       &apos;Naive Bayes&apos;,</div><div class="line">                       &apos;StackingClassifier&apos;]):</div><div class="line"></div><div class="line">    scores = model_selection.cross_val_score(clf, X, y, </div><div class="line">                                              cv=3, scoring=&apos;accuracy&apos;)</div><div class="line">    print(&quot;Accuracy: %0.2f (+/- %0.2f) [%s]&quot; </div><div class="line">          % (scores.mean(), scores.std(), label))</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">3-fold cross validation:</div><div class="line">Accuracy: 0.91 (+/- 0.01) [KNN]</div><div class="line">Accuracy: 0.91 (+/- 0.06) [Random Forest]</div><div class="line">Accuracy: 0.92 (+/- 0.03) [Naive Bayes]</div><div class="line">Accuracy: 0.94 (+/- 0.03) [StackingClassifier]</div></pre></td></tr></table></figure>
-<h2 id="示例3-学习法分类和GridSearch"><a href="#示例3-学习法分类和GridSearch" class="headerlink" title="示例3 - 学习法分类和GridSearch"></a>示例3 - 学习法分类和GridSearch</h2><p>要为scikit-learn设置参数网格GridSearch，需在参数网格中提供分类器的名称 - 在元回归的特殊情况下，添加’meta-‘前缀。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">from sklearn.linear_model import LogisticRegression</div><div class="line">from sklearn.neighbors import KNeighborsClassifier</div><div class="line">from sklearn.naive_bayes import GaussianNB </div><div class="line">from sklearn.ensemble import RandomForestClassifier</div><div class="line">from sklearn.model_selection import GridSearchCV</div><div class="line">from mlxtend.classifier import StackingClassifier</div><div class="line"></div><div class="line"># Initializing models</div><div class="line"></div><div class="line">clf1 = KNeighborsClassifier(n_neighbors=1)</div><div class="line">clf2 = RandomForestClassifier(random_state=1)</div><div class="line">clf3 = GaussianNB()</div><div class="line">lr = LogisticRegression()</div><div class="line">sclf = StackingClassifier(classifiers=[clf1, clf2, clf3], </div><div class="line">                          meta_classifier=lr)</div><div class="line"></div><div class="line">params = &#123;&apos;kneighborsclassifier__n_neighbors&apos;: [1, 5],</div><div class="line">          &apos;randomforestclassifier__n_estimators&apos;: [10, 50],</div><div class="line">          &apos;meta-logisticregression__C&apos;: [0.1, 10.0]&#125;</div><div class="line"></div><div class="line">grid = GridSearchCV(estimator=sclf, </div><div class="line">                    param_grid=params, </div><div class="line">                    cv=5,</div><div class="line">                    refit=True)</div><div class="line">grid.fit(X, y)</div><div class="line"></div><div class="line">cv_keys = (&apos;mean_test_score&apos;, &apos;std_test_score&apos;, &apos;params&apos;)</div><div class="line"></div><div class="line">for r, _ in enumerate(grid.cv_results_[&apos;mean_test_score&apos;]):</div><div class="line">    print(&quot;%0.3f +/- %0.2f %r&quot;</div><div class="line">          % (grid.cv_results_[cv_keys[0]][r],</div><div class="line">             grid.cv_results_[cv_keys[1]][r] / 2.0,</div><div class="line">             grid.cv_results_[cv_keys[2]][r]))</div><div class="line"></div><div class="line">print(&apos;Best parameters: %s&apos; % grid.best_params_)</div><div class="line">print(&apos;Accuracy: %.2f&apos; % grid.best_score_)</div></pre></td></tr></table></figure>
-<p>在此对于寻参方法，与之前的VoteClassifier 设计相同，但是作者本身还是更喜欢将一级分类器逐个寻优 -&gt;之后才带入一级模型训练 - &gt; 接着二级分类器模型寻参 -&gt; 二级模型训练</p>
-<p>如果我们计划多次使用回归算法，我们需要做的是在参数网格中添加一个额外的数字后缀，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">from sklearn.model_selection import GridSearchCV</div><div class="line"></div><div class="line"># Initializing models</div><div class="line"></div><div class="line">clf1 = KNeighborsClassifier(n_neighbors=1)</div><div class="line">clf2 = RandomForestClassifier(random_state=1)</div><div class="line">clf3 = GaussianNB()</div><div class="line">lr = LogisticRegression()</div><div class="line">sclf = StackingClassifier(classifiers=[clf1, clf1, clf2, clf3],  # 此处变化</div><div class="line">                          meta_classifier=lr)</div><div class="line"></div><div class="line">params = &#123;&apos;kneighborsclassifier-1__n_neighbors&apos;: [1, 5],</div><div class="line">          &apos;kneighborsclassifier-2__n_neighbors&apos;: [1, 5],   # 此处变化</div><div class="line">          &apos;randomforestclassifier__n_estimators&apos;: [10, 50],</div><div class="line">          &apos;meta-logisticregression__C&apos;: [0.1, 10.0]&#125;</div><div class="line"></div><div class="line">grid = GridSearchCV(estimator=sclf, </div><div class="line">                    param_grid=params, </div><div class="line">                    cv=5,</div><div class="line">                    refit=True)</div><div class="line">grid.fit(X, y)</div><div class="line"></div><div class="line">cv_keys = (&apos;mean_test_score&apos;, &apos;std_test_score&apos;, &apos;params&apos;)</div><div class="line"></div><div class="line">for r, _ in enumerate(grid.cv_results_[&apos;mean_test_score&apos;]):</div><div class="line">    print(&quot;%0.3f +/- %0.2f %r&quot;</div><div class="line">          % (grid.cv_results_[cv_keys[0]][r],</div><div class="line">             grid.cv_results_[cv_keys[1]][r] / 2.0,</div><div class="line">             grid.cv_results_[cv_keys[2]][r]))</div><div class="line"></div><div class="line">print(&apos;Best parameters: %s&apos; % grid.best_params_)</div><div class="line">print(&apos;Accuracy: %.2f&apos; % grid.best_score_)</div></pre></td></tr></table></figure></p>
+<ol>
+<li>初始化样本的权值为1/n。 </li>
+<li>基于样本与权值训练弱分类器；</li>
+<li>根据分类器对样本进行判别，如果判别正确，此样本的权值降低，判别错误，降低样本的权值，同时         根据识别率计算出此分类器的权值；</li>
+<li>利用改变权值的样本训练下一个分类器；</li>
+<li>循环得到N个分类器与其对应的权值；</li>
+<li><p>基于加权的分类器组合成为最终的模型</p>
+<p>adaboost算法模型简单，不容易过拟合，无需调参，优点挺多。但是其实也是需要根据样本类型来使用。</p>
+</li>
+</ol>
 <hr>
-<h2 id="API-说明"><a href="#API-说明" class="headerlink" title="API 说明"></a>API 说明</h2><p>StackingClassifier（classifiers，meta_classifier，use_probas = False，average_probas = False，verbose = 0）</p>
-<p><strong>参数</strong></p>
+<h2 id="1-2-实例分析："><a href="#1-2-实例分析：" class="headerlink" title="1.2 实例分析："></a>1.2 实例分析：</h2><ol>
+<li><p>实例环境</p>
+<p> sklearn + anconda + jupyter </p>
+</li>
+<li><p>实例步骤</p>
 <ul>
-<li><p>classifiers ：array-like，shape = [n_classifiers]</p>
-<p> 一级分类器列表</p>
-</li>
-<li><p>meta_classifier ：Object</p>
-<p> 二级分类器（元分类器）</p>
-</li>
-<li><p>use_probas ：bool（默认值：False）</p>
-<p> 如果为True，则基于预测的概率而不是类标签来训练元分类器。</p>
-</li>
-<li><p>average_probas ：bool（默认值：False）</p>
-<p> 如果为真，将概率平均为元特征。</p>
-</li>
-<li><p>verbose ：int，optional（default = 0）</p>
-<p> Controls the verbosity of the building process. - verbose=0 (default): Prints nothing - verbose=1: Prints the number &amp; name of the regressor being fitted - verbose=2: Prints info about the parameters of the regressor being fitted - verbose&gt;2: Changes verbose param of the underlying regressor to self.verbose - 2</p>
+<li>数据：可以采用 datasets 的数据，在此作者使用的是自己整理的股票行情</li>
+<li>训练、测试数据归一化</li>
+<li><p>参数寻优可以使用GridSearch，在此不作赘述</p>
+<p>参数列表：<br><img src="http://img.blog.csdn.net/20170313173836717?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 </li>
 </ul>
-<p><strong>属性</strong></p>
-<ul>
-<li><p>clfs_ ：list，shape = [n_classifiers]</p>
-<p> 一级分类器</p>
 </li>
-<li><p>meta<em>clf</em> ：estimators器</p>
-<p> 二级分类器（元分类器）</p>
-</li>
-</ul>
-<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>fit（X，y）<br>拟合合成分类器和元分类器。</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><p>X ：{array-like，sparse matrix}，shape = [n_samples，n_features]</p>
-<p> 训练向量，其中n_samples是样本的数量，n_features是特征的数量。</p>
-</li>
-<li><p>y ：array-like，shape = [n_samples]</p>
-<p> target values。</p>
-</li>
-</ul>
-<p><strong>Returns</strong><br>    self ：Object</p>
+<li>代码实现</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">#coding:utf-8</div><div class="line">import time   </div><div class="line">import sklearn</div><div class="line">import numpy as np  </div><div class="line">import pandas as pd</div><div class="line">from pandas import Series,DataFrame</div><div class="line">from sklearn.externals import joblib</div><div class="line">from sklearn import preprocessing    # 数据预处理工具</div><div class="line">from sklearn.ensemble import AdaBoostClassifier  # adaboost算法</div><div class="line">from sklearn.grid_search import GridSearchCV   # 用于参数寻优</div><div class="line">import matplotlib.pyplot as plt </div><div class="line">from matplotlib import *</div><div class="line">%matplotlib inline</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">start = time.clock() </div><div class="line">min_max_scaler = preprocessing.MinMaxScaler()</div><div class="line"></div><div class="line"># 读取训练数据 并数据规整化</div><div class="line">raw_data  = pd.read_csv(&apos;train_data.csv&apos;) </div><div class="line">raw_datax = raw_data</div><div class="line">X1_scaled = min_max_scaler.fit_transform(raw_datax.ix[:,3:7])</div><div class="line"></div><div class="line">y1 = raw_datax[&apos;Y1&apos;]</div><div class="line">y1 = list(y1)</div><div class="line"></div><div class="line"># 读取测试数据 并数据规整化</div><div class="line">raw_datat  = pd.read_csv(&apos;test_data.csv&apos;)</div><div class="line">raw_datatx = raw_datat</div><div class="line">X1t_scaled = min_max_scaler.fit_transform(raw_datatx.ix[:,3:7])</div><div class="line"></div><div class="line">y1t = raw_datatx[&apos;Y1&apos;]</div><div class="line">y1t = list(y1t)</div><div class="line"></div><div class="line">print len(X1_scaled)</div><div class="line">print len(X1t_scaled)</div><div class="line"># print X1_scaled</div><div class="line"># print X1t_scaled</div><div class="line">end = time.clock()</div><div class="line">print &apos;运行时间:&apos;,end - start</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># Fit model</div><div class="line">start = time.clock()  </div><div class="line">regr_1 = DecisionTreeClassifier()</div><div class="line">regr_2 = AdaBoostClassifier(base_estimator=DecisionTreeClassifier())</div><div class="line"></div><div class="line">clf = regr_1.fit(X1_scaled, y1)</div><div class="line">clf1 = regr_2.fit(X1_scaled, y1)</div><div class="line"></div><div class="line">#save model </div><div class="line">joblib.dump(clf1,&apos;Adaboost_M0.pkl&apos;,compress=3) </div><div class="line"></div><div class="line">clf1 = joblib.load(&apos;Adaboost_M0.pkl&apos;)</div><div class="line"># Predict</div><div class="line">y_1 = clf.predict(X1t_scaled)</div><div class="line">y_2 = clf1.predict(X1t_scaled)</div><div class="line"></div><div class="line">print &apos;单纯决策树:  &apos;,clf.score(X1t_scaled,y1t)</div><div class="line">print &apos;Adaboost_M0: &apos;,clf1.score(X1t_scaled,y1t)</div><div class="line">end = time.clock()</div><div class="line">print end - start</div></pre></td></tr></table></figure>
 <hr>
-<p>fit_transform（X，y = None，fit_params）</p>
-<p>进行数据规整化</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><p>X ：numpy array of shape [n_samples, n_features]</p>
-<p> 训练集</p>
-</li>
-<li><p>y ：numpy array of shape [n_samples]</p>
-<p> 标签</p>
-</li>
+<h2 id="1-3-方法总结"><a href="#1-3-方法总结" class="headerlink" title="1.3 方法总结"></a>1.3 方法总结</h2><ul>
+<li>adaboost 算法原理即迭代训练过程中每次都会根据上一次训练的分类结果重新分配训练样本的权重，以达到每次迭代训练都作重训练分类错误样本的目的，最终模型分类较为准确</li>
 </ul>
-<p><strong>Returns</strong></p>
+<p>1.运用注意点<br>2.优化方向点</p>
+<hr>
+<h1 id="2-GBDT算法"><a href="#2-GBDT算法" class="headerlink" title="2.GBDT算法"></a>2.GBDT算法</h1><p><strong>WIKI百科：</strong><br>全称(Gradient Boosting Decision Tree),梯度增强是用于回归和分类问题的机器学习技术，其以弱预测模型（通常是决策树）的集合的形式产生预测模型。它与其他增强方法一样以阶段式方式构建模型，并且通过允许任意可微分损失函数的优化来概括它们。<br>梯度增强的想法起源于Leo Breiman 的观察，增强可以被解释为对适当的成本函数的优化算法。随后由Jerome H. Friedman 和Llew Mason，Jonathan Baxter，Peter Bartlett和Marcus Frean的更通用的功能梯度提升视角同时开发了显式回归梯度提升算法。</p>
+<p><strong>通俗理解：</strong><br>其实Boosting更像是一种思想，Gradient Boosting是一种Boosting的方法，它主要的思想是，每一次建立模型是在之前建立模型损失函数的梯度下降方向。损失函数(loss function)描述的是模型的好坏程度，损失函数越大，则说明模型越容易出错（其实这里有一个方差、偏差均衡的问题，但是这里就假设损失函数越大，模型越容易出错）。如果我们的模型能够让损失函数持续的下降，则说明我们的模型在不停的改进，而最好的方式就是让损失函数在其梯度（Gradient)的方向上下降。<br>每次模型在梯度方向上的减少的部分，可以认为是一个“小”的或者“弱”的模型，最终我们会通过加权(也就是每次在梯度方向上下降的距离）的方式将这些“弱”的模型合并起来，形成一个更好的模型。</p>
+<h2 id="2-1-实现原理"><a href="#2-1-实现原理" class="headerlink" title="2.1 实现原理"></a>2.1 实现原理</h2><p><strong>数学基础：</strong><br><img src="http://img.blog.csdn.net/20170313171052678?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p><strong>图例描述：</strong></p>
+<p><strong>实现描述：</strong></p>
 <ul>
-<li><p>X_new ：numpy array of shape [n_samples, n_features_new]</p>
-<p> 转换数组</p>
-</li>
+<li>给定一个初始值</li>
+<li>表示建立M棵决策树（迭代M次）</li>
+<li>表示对函数估计值F(x)进行Logistic变换</li>
+<li>表示对于K个分类进行下面的操作（其实这个for循环也可以理解为向量的操作，每一个样本点xi都对 应 了K种可能的分类yi，所以yi, F(xi), p(xi)都是一个K维的向量，这样或许容易理解一点）</li>
+<li>表示求得残差减少的梯度方向</li>
+<li>表示根据每一个样本点x，与其残差减少的梯度方向，得到一棵由J个叶子节点组成的决策树</li>
+<li>为当决策树建立完成后，通过这个公式，可以得到每一个叶子节点的增益（这个增益在预测的时候用的）每个增益的组成其实也是一个K维的向量，表示如果在决策树预测的过程中，如果某一个样本点掉入了这个叶子节点，则其对应的K个分类的值是多少。比如说，GBDT得到了三棵决策树，一个样本点在预测的时候，也会掉入3个叶子节点上，其增益分别为（假设为3分类的问题）：<pre><code>(0.5, 0.8, 0.1),  (0.2, 0.6, 0.3),  (0.4, 0.3, 0.3)，那么这样最终得到的分类为第二个，因为选择分类2的决策树是最多的。
+</code></pre></li>
+<li>将当前得到的决策树与之前的那些决策树合并起来，作为新的一个模型</li>
 </ul>
 <hr>
-<p> get_params（deep = True）</p>
-<p>返回GridSearch支持的estimators参数名称。</p>
+<h2 id="2-2-实例分析"><a href="#2-2-实例分析" class="headerlink" title="2.2 实例分析"></a>2.2 实例分析</h2><ol>
+<li><p>实例环境</p>
+<p> sklearn + anconda + jupyter </p>
+</li>
+<li><p>实例步骤</p>
+<ul>
+<li>数据：可以采用 datasets 的数据，在此作者使用的是自己整理的股票行情</li>
+<li>训练、测试数据归一化</li>
+<li><p>参数寻优可以使用GridSearch，在此不作赘述</p>
+<p>参数列表：<br><img src="http://img.blog.csdn.net/20170313174847793?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>参数意义：<br><img src="http://img.blog.csdn.net/20170313181806672?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZ2l0aHViXzM1OTY1MzUx/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+</li>
+</ul>
+</li>
+<li>代码实现：<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line"><span class="keyword">import</span> time   </div><div class="line"><span class="keyword">import</span> sklearn</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np  </div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *</div><div class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> Series,DataFrame</div><div class="line"><span class="keyword">from</span> sklearn.externals <span class="keyword">import</span> joblib</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing    <span class="comment"># 数据预处理工具</span></div><div class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier  <span class="comment"># 梯度树分类</span></div><div class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier   <span class="comment"># 决策数分类</span></div><div class="line"><span class="keyword">from</span> sklearn.grid_search <span class="keyword">import</span> GridSearchCV   <span class="comment"># 用于参数寻优</span></div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt </div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> *</div><div class="line">%matplotlib inline</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">start = time.clock()  # 计时</div><div class="line">min_max_scaler = preprocessing.MinMaxScaler()</div><div class="line"></div><div class="line"># 读取训练数据 并数据规整化</div><div class="line">raw_data  = pd.read_csv(&apos;train_data.csv&apos;) </div><div class="line">raw_datax = raw_data</div><div class="line">X1_scaled = min_max_scaler.fit_transform(raw_datax.ix[:,3:7])</div><div class="line"></div><div class="line">y1 = raw_datax[&apos;Y1&apos;]</div><div class="line">y1 = list(y1)</div><div class="line"></div><div class="line"># 读取测试数据 并数据规整化</div><div class="line">raw_datat  = pd.read_csv(&apos;test_data.csv&apos;)</div><div class="line">raw_datatx = raw_datat</div><div class="line">X1t_scaled = min_max_scaler.fit_transform(raw_datatx.ix[:,3:7])</div><div class="line"></div><div class="line">y1t = raw_datatx[&apos;Y1&apos;]</div><div class="line">y1t = list(y1t)</div><div class="line"></div><div class="line">print len(X1_scaled)</div><div class="line">print len(X1t_scaled)</div><div class="line"># print X1_scaled</div><div class="line"># print X1t_scaled</div><div class="line">end = time.clock()</div><div class="line">print &apos;运行时间:&apos;,end - start</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># Fit model</div><div class="line">start = time.clock()   </div><div class="line">regr_1 = DecisionTreeClassifier()</div><div class="line">regr_2 = GradientBoostingClassifier()</div><div class="line">clf = regr_1.fit(X1_scaled, y1)</div><div class="line">clf1 = regr_2.fit(X1_scaled, y1)</div><div class="line"></div><div class="line">#save model  </div><div class="line">joblib.dump(clf1,&apos;GBDT.pkl&apos;,compress=3) </div><div class="line"></div><div class="line">clf1 = joblib.load(&apos;GBDT.pkl&apos;)</div><div class="line"># Predict</div><div class="line">y_1 = clf.predict(X1t_scaled)</div><div class="line">y_2 = clf1.predict(X1t_scaled)</div><div class="line"></div><div class="line">print &apos;单纯决策树:  &apos;,clf.score(X1t_scaled,y1t)</div><div class="line">print &apos;GBDT: &apos;,clf1.score(X1t_scaled,y1t)</div><div class="line">end = time.clock()</div><div class="line">print end - start</div></pre></td></tr></table></figure>
 <hr>
-<p>predict(X)</p>
-<p>预测X的标签</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><p>X ：{array-like，sparse matrix}，shape = [n_samples，n_features]</p>
-<p> 训练向量，其中n_samples是样本的数量，n_features是特征的数量。</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<ul>
-<li>labels ：array-like，shape = [n_samples]</li>
-</ul>
-<p>Predicted class labels.</p>
-<hr>
-<p> predict_proba（X）</p>
-<p>Predict class probabilities for X.</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><p>X ：{array-like，sparse matrix}，shape = [n_samples，n_features]</p>
-<p> 训练向量，其中n_samples是样本的数量，n_features是特征的数量。</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<ul>
-<li><p>proba ：array-like，shape = [n_samples，n_classes]</p>
-<p> 每个样本的概率。</p>
-</li>
-</ul>
-<hr>
-<ul>
-<li><p>score（X，y，sample_weight = None）</p>
-<p> Returns the mean accuracy on the given test data and labels.</p>
-</li>
-</ul>
-<p>在多标签分类中，这是子集精度，其是苛刻的度量，因为对于每个样本需要正确地预测每个标号集合。</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><p>X ：array-like，shape =（n_samples，n_features）</p>
-<p> 测试</p>
-</li>
-<li><p>y ：array-like，shape =（n_samples）或（n_samples，n_outputs）</p>
-<p> X的真实标签。</p>
-</li>
-<li><p>sample_weight ：array-like，shape = [n_samples]，可选</p>
-</li>
-</ul>
-<p><strong>Returns</strong></p>
-<ul>
-<li><p>score ：float</p>
-<p> Mean accuracy of self.predict(X) wrt. y.</p>
-</li>
-</ul>
-<hr>
-<p>set_params（params）</p>
-<p>设置estimators的参数。</p>
-<p>该方法适用于简单estimators以及嵌套对象（例如pipelines）后者具有形式的参数 <component>__<parameter> 以便可以更新嵌套对象的每个组件。</parameter></component></p>
+<h2 id="2-3-方法总结"><a href="#2-3-方法总结" class="headerlink" title="2.3 方法总结"></a>2.3 方法总结</h2><hr>
+<p>资料参考：<a href="http://blog.csdn.net/qq_30189255/article/details/51532442" target="_blank" rel="external">http://blog.csdn.net/qq_30189255/article/details/51532442</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.taojinglong.com/2018/04/04/StackingClassifier/" data-id="cjfkxf1zi0003jmf8tx9x0zft" class="article-share-link">Share</a>
+      <a data-url="http://www.taojinglong.com/2018/04/04/BoostingClassifier/" data-id="cjftbox9p0002pkf8fli3wuwa" class="article-share-link">Share</a>
       
       
     </footer>
@@ -290,6 +224,10 @@
       <ul>
         
           <li>
+            <a href="/2018/04/10/OpenCV的等高线画法/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2018/04/04/BaggingClassifier/">BaggingClassifier</a>
           </li>
         
@@ -303,10 +241,6 @@
         
           <li>
             <a href="/2018/04/04/图片处理之模式匹配（match_template）/">图片处理之模式匹配（match_template）</a>
-          </li>
-        
-          <li>
-            <a href="/2018/04/04/OpenCV的等高线画法/">OpenCV的等高线画法</a>
           </li>
         
       </ul>
